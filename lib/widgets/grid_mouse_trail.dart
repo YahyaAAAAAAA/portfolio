@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:portfolio_3/utils/constants.dart';
+
 /// A wrapper widget that adds grid-based mouse trail effects to any child widget
 class GridMouseTrail extends StatefulWidget {
   final Widget child;
@@ -99,6 +101,11 @@ class _GridMouseTrailState extends State<GridMouseTrail>
       currentRow = row;
       currentCol = col;
 
+      // Add the current cell to the allNeighbors array so it gets faded out
+      allNeighbors.add(
+        GridCell(row: row, col: col, opacity: widget.startingAlpha),
+      );
+
       // Add new neighbors to the allNeighbors array
       List<GridCell> newNeighbors = _getRandomNeighbors(row, col);
       allNeighbors.addAll(newNeighbors);
@@ -147,31 +154,34 @@ class _GridMouseTrailState extends State<GridMouseTrail>
         final size = Size(constraints.maxWidth, constraints.maxHeight);
         _updateGridSize(size);
 
-        return MouseRegion(
-          onHover:
-              widget.enabled
-                  ? (event) => _onMouseMove(event.localPosition, size)
-                  : null,
-          child: Stack(
-            children: [
-              widget.child,
-              if (widget.enabled)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: CustomPaint(
-                      painter: GridTrailPainter(
-                        allNeighbors: allNeighbors,
-                        currentRow: currentRow,
-                        currentCol: currentCol,
-                        cellSize: widget.cellSize,
-                        trailColor: widget.trailColor,
-                        startingAlpha: widget.startingAlpha,
-                        size: size,
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(kOuterBorderRadius),
+          child: MouseRegion(
+            onHover:
+                widget.enabled
+                    ? (event) => _onMouseMove(event.localPosition, size)
+                    : null,
+            child: Stack(
+              children: [
+                widget.child,
+                if (widget.enabled)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: CustomPaint(
+                        painter: GridTrailPainter(
+                          allNeighbors: allNeighbors,
+                          currentRow: currentRow,
+                          currentCol: currentCol,
+                          cellSize: widget.cellSize,
+                          trailColor: widget.trailColor,
+                          startingAlpha: widget.startingAlpha,
+                          size: size,
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -214,24 +224,7 @@ class GridTrailPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size canvasSize) {
-    // Draw the current cell under the mouse cursor
-    if (currentRow >= 0 && currentCol >= 0) {
-      double x = currentCol * cellSize;
-      double y = currentRow * cellSize;
-
-      final currentCellPaint =
-          Paint()
-            ..color = trailColor.withOpacity(startingAlpha / 255.0)
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 0.8;
-
-      canvas.drawRect(
-        Rect.fromLTWH(x, y, cellSize, cellSize),
-        currentCellPaint,
-      );
-    }
-
-    // Draw all neighbors with their respective opacities
+    // Draw all cells (including the current cell) with their respective opacities
     for (var neighbor in allNeighbors) {
       double neighborX = neighbor.col * cellSize;
       double neighborY = neighbor.row * cellSize;

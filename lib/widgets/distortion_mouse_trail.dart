@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_3/utils/constants.dart';
 import 'dart:math' as math;
 
 import 'package:portfolio_3/utils/global_colors.dart';
 
 /// A wrapper widget that adds circular noise/distortion trail effects around the mouse
-class DistortionTrail extends StatefulWidget {
+class DistortionMouseTrail extends StatefulWidget {
   final Widget child;
   final Color noiseColor;
   final double circleRadius;
@@ -15,7 +16,7 @@ class DistortionTrail extends StatefulWidget {
   final double noiseIntensity;
   final bool enabled;
 
-  const DistortionTrail({
+  const DistortionMouseTrail({
     super.key,
     required this.child,
     this.noiseColor = GColors.purple,
@@ -29,10 +30,10 @@ class DistortionTrail extends StatefulWidget {
   });
 
   @override
-  _DistortionTrailState createState() => _DistortionTrailState();
+  _DistortionMouseTrailState createState() => _DistortionMouseTrailState();
 }
 
-class _DistortionTrailState extends State<DistortionTrail>
+class _DistortionMouseTrailState extends State<DistortionMouseTrail>
     with TickerProviderStateMixin {
   List<NoiseParticle> allParticles = [];
   late AnimationController _controller;
@@ -76,7 +77,7 @@ class _DistortionTrailState extends State<DistortionTrail>
   }
 
   @override
-  void didUpdateWidget(DistortionTrail oldWidget) {
+  void didUpdateWidget(DistortionMouseTrail oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.enabled && !oldWidget.enabled) {
       _controller.repeat();
@@ -140,6 +141,7 @@ class _DistortionTrailState extends State<DistortionTrail>
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
+      borderRadius: BorderRadius.circular(kOuterBorderRadius),
       child: MouseRegion(
         onHover:
             widget.enabled
@@ -250,7 +252,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: DistortionTrail(
+      home: DistortionMouseTrail(
         noiseColor: Colors.cyan,
         circleRadius: 100.0,
         noiseParticles: 200,
@@ -279,7 +281,7 @@ class MyApp extends StatelessWidget {
                 ),
                 SizedBox(height: 40),
                 // Example of nested distortion effects
-                DistortionTrail(
+                DistortionMouseTrail(
                   noiseColor: Colors.red,
                   circleRadius: 60.0,
                   noiseParticles: 100,

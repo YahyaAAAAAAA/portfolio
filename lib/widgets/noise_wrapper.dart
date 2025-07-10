@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gif/gif.dart';
 
 class NoiseWrapper extends StatelessWidget {
   final Widget child;
@@ -22,9 +23,11 @@ class NoiseWrapper extends StatelessWidget {
             child: IgnorePointer(
               child: Opacity(
                 opacity: opacity!,
-                child: Image.asset(
-                  'assets/images/noise.gif',
+                child: Gif(
+                  image: AssetImage('assets/images/noise.gif'),
                   fit: BoxFit.cover,
+                  autostart: Autostart.loop,
+                  placeholder: (context) => Text('Loading...'),
                 ),
               ),
             ),

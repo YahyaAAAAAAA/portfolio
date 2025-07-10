@@ -1,0 +1,128 @@
+import 'package:flutter/material.dart';
+import 'package:portfolio_3/models/panel.dart';
+import 'package:portfolio_3/utils/enums/mouse_trail_types.dart';
+import 'package:portfolio_3/utils/extensions/context_extensions.dart';
+import 'package:portfolio_3/utils/extensions/list_extensions.dart';
+import 'package:portfolio_3/utils/global_colors.dart';
+
+class PanelsManager {
+  Panel panel0 = Panel(
+    enabled: true,
+    height: double.infinity,
+    width: 455,
+    color: GColors.darkPurple,
+    trail: MouseTrailType.grid,
+    axis: Axis.horizontal,
+    // maxWidth: 455,
+  );
+
+  Panel panel1 = Panel(
+    enabled: true,
+    isExpanded: true,
+    height: double.infinity,
+    color: GColors.purple,
+    trail: MouseTrailType.distortion,
+    axis: Axis.horizontal,
+  );
+
+  Panel panel2 = Panel(
+    enabled: true,
+    height: 255,
+    width: double.infinity,
+    color: GColors.darkPurple,
+    trail: MouseTrailType.grid,
+    axis: Axis.vertical,
+  );
+
+  Panel panel3 = Panel(
+    enabled: true,
+    height: 255,
+    width: double.infinity,
+    color: GColors.darkPurple,
+    trail: MouseTrailType.grid,
+    axis: Axis.vertical,
+    alignment: Alignment.topCenter,
+  );
+
+  Panel panel4 = Panel(
+    enabled: true,
+    height: 255,
+    width: double.infinity,
+    color: GColors.white,
+    trail: MouseTrailType.grid,
+    axis: Axis.vertical,
+    alignment: Alignment.bottomCenter,
+  );
+
+  List<bool> get panelsEnabled => [
+    panel0.enabled,
+    panel1.enabled,
+    panel2.enabled,
+    panel3.enabled,
+    panel4.enabled,
+  ];
+
+  PanelsManager() {
+    // panel0.maxWidth =
+    //     (panel3.enabled || panel4.enabled) ||
+    //             (context.width() < 960) ||
+    //             panelsEnabled.only([0]) ||
+    //             panelsEnabled.only([0, 2])
+    //         ? context.width() / 4
+    //         : 455;
+  }
+
+  //toggle panel
+  void togglePanel(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        panel0.enabled = !panel0.enabled;
+        break;
+      case 1:
+        panel1.enabled = !panel1.enabled;
+        break;
+      case 2:
+        panel2.enabled = !panel2.enabled;
+        break;
+      case 3:
+        panel3.enabled = !panel3.enabled;
+        break;
+      case 4:
+        panel4.enabled = !panel4.enabled;
+        break;
+    }
+
+    onToggleCheck(context);
+  }
+
+  double getPanelHeight(BuildContext context) {
+    if (panel3.enabled && !panel4.enabled) {
+      return context.height() - 88;
+    } else if (!panel3.enabled && panel4.enabled) {
+      return context.height() - 88;
+    } else if (panel3.enabled && panel4.enabled) {
+      return context.height() / 2 - 49;
+    }
+    return 0;
+  }
+
+  void onToggleCheck(BuildContext context) {
+    if ((panel3.enabled || panel4.enabled) ||
+        (context.width() < 960) ||
+        panelsEnabled.only([0]) ||
+        panelsEnabled.only([0, 2])) {
+      panel0.maxWidth = context.width() / 4;
+    } else {
+      panel0.maxWidth = 455;
+    }
+
+    if (panel3.enabled && !panel4.enabled) {
+      panel3.height = context.height() - 88;
+    } else if (!panel3.enabled && panel4.enabled) {
+      panel4.height = context.height() - 88;
+    } else if (panel3.enabled && panel4.enabled) {
+      panel3.height = context.height() / 2 - 49;
+      panel4.height = context.height() / 2 - 49;
+    }
+  }
+}
