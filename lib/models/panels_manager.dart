@@ -21,7 +21,7 @@ class PanelsManager {
     isExpanded: true,
     height: double.infinity,
     color: GColors.purple,
-    trail: MouseTrailType.distortion,
+    trail: MouseTrailType.none,
     axis: Axis.horizontal,
   );
 
@@ -48,7 +48,7 @@ class PanelsManager {
     enabled: true,
     height: 255,
     width: double.infinity,
-    color: GColors.white,
+    color: GColors.darkPurple,
     trail: MouseTrailType.grid,
     axis: Axis.vertical,
     alignment: Alignment.bottomCenter,
@@ -62,15 +62,7 @@ class PanelsManager {
     panel4.enabled,
   ];
 
-  PanelsManager() {
-    // panel0.maxWidth =
-    //     (panel3.enabled || panel4.enabled) ||
-    //             (context.width() < 960) ||
-    //             panelsEnabled.only([0]) ||
-    //             panelsEnabled.only([0, 2])
-    //         ? context.width() / 4
-    //         : 455;
-  }
+  PanelsManager();
 
   //toggle panel
   void togglePanel(BuildContext context, int index) {

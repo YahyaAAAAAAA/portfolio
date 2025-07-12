@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .div-block-2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1;
+        }
+
+        .heading {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        ._3d-element {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 20px;
+            z-index: 2;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            margin-top: 2rem;
+        }
+
+        .char {
+            display: inline-block;
+            transform-origin: center;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .content h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @media (max-width: 768px) {
+            .heading {
+                font-size: 1.8rem;
+            }
+            
+            .h1 {
+                font-size: 2.5rem;
+            }
+            
+            ._3d-element {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container">
+        <div class="div-block-2"></div>
+        <div class="heading">Loading</div>
+        <div class="_3d-element"></div>
+        <h1 class="h1">Portfolio</h1>
+    </div>
+
+    <div class="content">
+        <h2>Welcome to My Portfolio</h2>
+        <p>This is a beautiful animated loading screen created with GSAP. The animation includes text splitting, 3D transformations, and smooth transitions.</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/splitting/dist/splitting.js"></script>
+    <script>
+    window.addEventListener('load', function() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const initLoaderAnimation = () => {
+        const heading = document.querySelector('.heading');
+        const loader = document.querySelector('.div-block-2');
+        const element3D = document.querySelector('._3d-element');
+        const mainTitle = document.querySelector('.h1');
+        const content = document.querySelector('.content');
+        const contentH2 = document.querySelector('.content h2');
+        const contentP = document.querySelector('.content p');
+        
+        if (heading && loader && element3D && mainTitle) {
+
+          Splitting({ target: mainTitle, by: "chars" });
+          const mainTitleChars = mainTitle.querySelectorAll('.char');
+
+          Splitting({ target: heading, by: "chars" });
+          const headingChars = heading.querySelectorAll('.char');
+          
+        
+          headingChars.forEach(char => {
+            char.style.display = 'inline-block';
+            char.style.willChange = 'transform';
+            char.style.transformStyle = 'preserve-3d';
+            char.parentNode.style.perspective = '1000px';
+          });
+
+          gsap.set(headingChars, { opacity: 0, rotationY: -90, scale: 0.8, x: 20 });
+          gsap.set(element3D, { yPercent: 102, opacity: 0 });
+          gsap.set(mainTitleChars, { opacity: 0, rotationX: 90, transformOrigin: "50% 50%" });
+          gsap.set(contentH2, { opacity: 0, y: 50 });
+          gsap.set(contentP, { opacity: 0, y: 30 });
+
+          const mainTl = gsap.timeline();
+
+          mainTl
+          
+            .to(headingChars, {
+              opacity: 1,
+              rotationY: 0,
+              scale: 1,
+              x: 0,
+              ease: 'power2.out',
+              stagger: { each: 0.03, from: 0 },
+              duration: 0.8
+            })
+            .to(headingChars, {
+              opacity: 0,
+              rotationY: 90,
+              scale: 0.8,
+              x: -20,
+              ease: 'power2.in',
+              stagger: { each: 0.02, from: 0 },
+              duration: 0.4
+            })
+          
+            .to(loader, {
+              yPercent: -102,
+              duration: 0.8,
+              ease: "power2.inOut"
+            })
+            .to(element3D, {
+              yPercent: -15,
+              opacity: 1,
+              duration: 1.8,
+              ease: "power2.inOut"
+            }, "-=0.8") // Commence en même temps que le loader
+            .set(loader, { display: "none" })
+            // Nouvelle animation pour h1
+            .to(mainTitleChars, {
+              opacity: 1,
+              rotationX: 0,
+              duration: 1.2,
+              stagger: {
+                each: 0.05,
+                from: "random"
+              },
+              ease: "back.out(1.7)"
+            }, "-=1")
+            // Animation for content
+            .to(contentH2, {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out"
+            }, "-=0.5")
+            .to(contentP, {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out"
+            }, "-=0.3")
+            // Final animation for the 3D element
+            .to(element3D, {
+              rotationY: 360,
+              scale: 1.1,
+              duration: 2,
+              ease: "power2.inOut"
+            }, "-=0.5");
+        }
+      };
+
+      initLoaderAnimation();
+    });
+    </script>
+</body>
+</html>
