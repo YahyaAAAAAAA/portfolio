@@ -27,7 +27,7 @@ class AnimatedCollapse extends StatefulWidget {
   final Duration? reverseDuration;
 
   @override
-  _AnimatedCollapseState createState() => _AnimatedCollapseState();
+  State<AnimatedCollapse> createState() => _AnimatedCollapseState();
 }
 
 class _AnimatedCollapseState extends State<AnimatedCollapse>

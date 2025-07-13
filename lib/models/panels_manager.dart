@@ -6,6 +6,8 @@ import 'package:portfolio_3/utils/extensions/list_extensions.dart';
 import 'package:portfolio_3/utils/global_colors.dart';
 
 class PanelsManager {
+  final BuildContext context;
+
   Panel panel0 = Panel(
     enabled: true,
     height: double.infinity,
@@ -62,7 +64,15 @@ class PanelsManager {
     panel4.enabled,
   ];
 
-  PanelsManager();
+  PanelsManager(this.context);
+
+  void init() {
+    panel0.color = context.theme.cardColor;
+    panel1.color = context.theme.canvasColor;
+    panel2.color = context.theme.cardColor;
+    panel3.color = context.theme.cardColor;
+    panel4.color = context.theme.cardColor;
+  }
 
   //toggle panel
   void togglePanel(BuildContext context, int index) {

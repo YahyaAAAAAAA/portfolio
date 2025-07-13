@@ -5,5 +5,6 @@ class GColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color purple = Color(0xFF45345a);
   static const Color darkPurple = Color(0xFF060419);
-  static const Color lightGray = Color(0xFFAFAFAF);
+  static const Color indigo = Color(0xFF201F2A);
+  static const Color lightGrey = Color(0xFFAFAFAF);
 }
