@@ -23,6 +23,7 @@ class App extends StatelessWidget {
         primaryColor: GColors.darkPurple,
         cardColor: GColors.darkPurple,
         canvasColor: GColors.purple,
+        splashColor: GColors.persianIndigo,
         disabledColor: GColors.lightGrey,
         iconTheme: IconThemeData(color: GColors.white, size: kIconSizeMedium),
         appBarTheme: AppBarTheme(

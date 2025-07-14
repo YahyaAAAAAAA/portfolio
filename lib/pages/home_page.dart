@@ -4,9 +4,11 @@ import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_app_bar.dart';
 import 'package:portfolio_3/widgets/panels/about_panel.dart';
+import 'package:portfolio_3/widgets/panels/experience_panel.dart';
+import 'package:portfolio_3/widgets/panels/logo_panel.dart';
 import 'package:portfolio_3/widgets/panels/projects_panel.dart';
-import 'package:portfolio_3/widgets/wrappers/grid_3d_wrapper.dart';
 import 'package:portfolio_3/widgets/panels/home_panel.dart';
+import 'package:portfolio_3/widgets/project_button.dart';
 import 'package:portfolio_3/widgets/wrappers/noise_wrapper.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,8 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PanelsManager panelsManager;
-  late AnimationController _opacityController;
-  late Animation<double> _opacityAnimation;
+  int projectIndex = 0;
 
   @override
   void initState() {
@@ -29,21 +30,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       panelsManager.init();
       setState(() {});
     });
-
-    _opacityController = AnimationController(
-      duration: Duration(milliseconds: k2000mill),
-      vsync: this,
-    );
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _opacityController, curve: Curves.bounceInOut),
-    );
-    _opacityController.repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _opacityController.dispose();
-    super.dispose();
   }
 
   @override
@@ -92,30 +78,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           //top-right
                           HomePanel(
                             panel: panelsManager.panel1,
-                            child: Grid3DWrapper(
-                              child: Center(
-                                child: Stack(
-                                  children: [
-                                    AnimatedBuilder(
-                                      animation: _opacityAnimation,
-                                      builder: (context, child) {
-                                        return Opacity(
-                                          opacity: _opacityAnimation.value,
-                                          child: Image.asset(
-                                            'assets/images/logo_filled_shadow.png',
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    Image.asset(
-                                      'assets/images/logo_inside_app_shadow.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            child: LogoPanel(),
                           ),
                         ],
                       ),
@@ -123,7 +86,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     //bottom
                     HomePanel(
                       panel: panelsManager.panel2,
-                      child: ProjectsPanel(),
+                      child: ProjectsPanel(
+                        itemBuilder:
+                            (context, index) => ProjectButton(
+                              width: 180,
+                              height: 160,
+                              onPressed:
+                                  () => setState(() => projectIndex = index),
+                            ),
+                      ),
                     ),
                   ],
                 ),
@@ -142,12 +113,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     //top
                     HomePanel(
                       panel: panelsManager.panel3,
-                      child: Text('Projects Display'),
+                      child: Text('Projects Display $projectIndex'),
                     ),
                     //bottom
                     HomePanel(
                       panel: panelsManager.panel4,
-                      child: Text('Experience/Contact/Resume/etc'),
+                      child: ExperiencePanel(),
                     ),
                   ],
                 ),

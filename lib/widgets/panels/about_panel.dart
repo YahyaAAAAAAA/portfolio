@@ -5,7 +5,7 @@ import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_divider.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
-import 'package:web_smooth_scroll/web_smooth_scroll.dart';
+import 'package:portfolio_3/widgets/smooth_list.dart';
 
 class AboutPanel extends StatefulWidget {
   const AboutPanel({super.key});
@@ -29,7 +29,7 @@ class _AboutPanelState extends State<AboutPanel> {
       padding: const EdgeInsets.all(kPanelPaddingMedium),
       child: ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-        child: WebSmoothScroll(
+        child: SmoothList(
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,

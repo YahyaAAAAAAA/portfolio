@@ -1,14 +1,15 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
-import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
-import 'package:portfolio_3/widgets/ripple_hover_button.dart';
-import 'package:web_smooth_scroll/web_smooth_scroll.dart';
+import 'package:portfolio_3/widgets/project_button.dart';
+import 'package:portfolio_3/widgets/smooth_list.dart';
 
 class ProjectsPanel extends StatefulWidget {
-  const ProjectsPanel({super.key});
+  final Widget Function(BuildContext context, int index) itemBuilder;
+
+  const ProjectsPanel({super.key, required this.itemBuilder});
 
   @override
   State<ProjectsPanel> createState() => _ProjectsPanelState();
@@ -45,11 +46,10 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
               ),
               Row(
                 children: [
-                  RippleHoverButton(
+                  ProjectButton(
                     width: 30,
                     height: 30,
-                    rippleRadius: 1,
-                    baseColor: context.theme.dividerColor,
+
                     onPressed:
                         () => _scrollController.animateTo(
                           _scrollController.position.pixels - 200,
@@ -59,11 +59,10 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
                     child: Icon(Icons.arrow_back_rounded),
                   ),
                   10.width,
-                  RippleHoverButton(
+                  ProjectButton(
                     width: 30,
                     height: 30,
-                    rippleRadius: 1,
-                    baseColor: context.theme.dividerColor,
+
                     onPressed:
                         () => _scrollController.animateTo(
                           _scrollController.position.pixels + 200,
@@ -84,15 +83,16 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
               child: ScrollConfiguration(
                 behavior: ScrollConfiguration.of(
                   context,
-                ).copyWith(scrollbars: false),
-                child: WebSmoothScroll(
+                ).copyWith(scrollbars: true),
+                child: SmoothList(
+                  // enableDrag: false,
                   controller: _scrollController,
                   child: ListView.separated(
                     controller: _scrollController,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => ProjectButton(),
+                    itemBuilder: widget.itemBuilder,
                     separatorBuilder: (context, index) => 10.width,
                     itemCount: 10,
                   ),
@@ -101,37 +101,6 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ProjectButton extends StatelessWidget {
-  const ProjectButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return RippleHoverButton(
-      width: 180,
-      height: 160,
-      baseColor: context.theme.cardColor,
-      rippleRadius: 1,
-      child: Padding(
-        padding: const EdgeInsets.all(kPanelPaddingMedium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              backgroundColor: context.theme.disabledColor,
-              radius: 30,
-              child: Icon(Icons.android),
-            ),
-            Spacer(),
-            BodyMediumText('Android'),
-            BodySmallText('Application', color: context.theme.disabledColor),
-          ],
-        ),
       ),
     );
   }

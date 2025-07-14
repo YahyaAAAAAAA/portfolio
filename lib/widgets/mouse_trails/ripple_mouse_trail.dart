@@ -3,45 +3,48 @@ import 'package:flutter/services.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 
-class RippleHoverButton extends StatefulWidget {
-  final VoidCallback? onPressed;
-  final Color baseColor;
-  final Color rippleColor;
-  final double width;
-  final double height;
+/// A wrapper widget that adds a ripple effect to any child widget
+class RippleMouseTrail extends StatefulWidget {
   final Widget child;
+  final Color? rippleColor;
   final double rippleRadius;
+  final bool enabled;
+  final bool isOnTop;
+  final MouseCursor cursor;
+  final Color baseColor;
 
-  const RippleHoverButton({
+  const RippleMouseTrail({
     super.key,
     required this.child,
-    this.onPressed,
+    this.rippleColor,
+    this.rippleRadius = 1,
+    this.enabled = true,
+    this.isOnTop = false,
+    this.cursor = MouseCursor.defer,
     this.baseColor = Colors.transparent,
-    this.rippleColor = const Color(0xFF3b0f7c),
-    this.width = 200,
-    this.height = 50,
-    this.rippleRadius = 0.5,
   });
 
   @override
-  State<RippleHoverButton> createState() => _RippleHoverButtonState();
+  State<RippleMouseTrail> createState() => _RippleMouseTrailState();
 }
 
-class _RippleHoverButtonState extends State<RippleHoverButton>
-    with SingleTickerProviderStateMixin {
+class _RippleMouseTrailState extends State<RippleMouseTrail>
+    with TickerProviderStateMixin {
   bool _isHovered = false;
+  bool _isPressed = false;
   Offset _mousePosition = Offset.zero;
   late AnimationController _animationController;
   late Animation<double> _animation;
+  Size? _widgetSize;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: Duration(milliseconds: 0),
+      duration: Duration(milliseconds: 300),
       vsync: this,
     );
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _animation = Tween<double>(begin: 0.0, end: 1).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
   }
@@ -67,44 +70,102 @@ class _RippleHoverButtonState extends State<RippleHoverButton>
   }
 
   void _onExit(PointerExitEvent event) {
+    // Only exit if not pressed (dragging)
+    if (!_isPressed) {
+      setState(() {
+        _isHovered = false;
+      });
+      _animationController.reverse();
+    }
+  }
+
+  void _onPointerDown(PointerDownEvent event) {
     setState(() {
-      _isHovered = false;
+      _isPressed = true;
+      _mousePosition = event.localPosition;
     });
-    _animationController.reverse();
+  }
+
+  void _onPointerUp(PointerUpEvent event) {
+    setState(() {
+      _isPressed = false;
+    });
+    // Check if we're still hovering after release
+    if (!_isHovered) {
+      _animationController.reverse();
+    }
+  }
+
+  void _onPointerMove(PointerMoveEvent event) {
+    setState(() {
+      _mousePosition = event.localPosition;
+    });
+
+    // Check if mouse is still within widget bounds when pressed
+    if (_isPressed && _widgetSize != null) {
+      final isWithinBounds =
+          event.localPosition.dx >= 0 &&
+          event.localPosition.dx <= _widgetSize!.width &&
+          event.localPosition.dy >= 0 &&
+          event.localPosition.dy <= _widgetSize!.height;
+
+      if (!isWithinBounds && _isHovered) {
+        setState(() {
+          _isHovered = false;
+        });
+        _animationController.reverse();
+      } else if (isWithinBounds && !_isHovered) {
+        setState(() {
+          _isHovered = true;
+        });
+        _animationController.forward();
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onHover: _onHover,
-      onEnter: _onEnter,
-      onExit: _onExit,
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return CustomPaint(
-              painter: RipplePainter(
-                isHovered: _isHovered,
-                mousePosition: _mousePosition,
-                animation: _animation.value,
-                baseColor: widget.baseColor,
-                rippleColor: widget.rippleColor,
-                rippleRadius: widget.rippleRadius,
-              ),
-              child: Container(
-                width: widget.width,
-                height: widget.height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kOuterBorderRadius),
-                  border: Border.all(color: context.theme.dividerColor),
-                ),
-                child: widget.child,
-              ),
-            );
-          },
-        ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        _widgetSize = Size(constraints.maxWidth, constraints.maxHeight);
+        return Listener(
+          onPointerDown: _onPointerDown,
+          onPointerUp: _onPointerUp,
+          onPointerMove: _onPointerMove,
+          child: MouseRegion(
+            onHover: _onHover,
+            onEnter: _onEnter,
+            onExit: _onExit,
+            cursor: widget.cursor,
+            child: Stack(
+              children: [
+                if (widget.enabled && widget.isOnTop) widget.child,
+                buildEffect(),
+                if (widget.enabled && !widget.isOnTop) widget.child,
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Positioned buildEffect() {
+    return Positioned.fill(
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return CustomPaint(
+            painter: RipplePainter(
+              isHovered: _isHovered || _isPressed,
+              mousePosition: _mousePosition,
+              animation: _animation.value,
+              baseColor: widget.baseColor,
+              rippleColor: widget.rippleColor ?? context.theme.splashColor,
+              rippleRadius: widget.rippleRadius,
+            ),
+          );
+        },
       ),
     );
   }
@@ -154,9 +215,11 @@ class RipplePainter extends CustomPainter {
           rippleColor.withValues(alpha: 0.6),
           rippleColor.withValues(alpha: 0.3),
           rippleColor.withValues(alpha: 0.1),
+          rippleColor.withValues(alpha: 0.05),
+          Colors.transparent,
           Colors.transparent,
         ],
-        stops: [0.0, 0.3, 0.7, 1.0],
+        // stops: [0.0, 0.3, 0.7, 1.0, 1, 1, 1, 1],
       );
 
       // Create paint with gradient

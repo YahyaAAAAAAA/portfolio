@@ -23,7 +23,7 @@ class PanelsManager {
     isExpanded: true,
     height: double.infinity,
     color: GColors.purple,
-    trail: MouseTrailType.none,
+    trail: MouseTrailType.ripple,
     axis: Axis.horizontal,
   );
 

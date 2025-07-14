@@ -6,6 +6,7 @@ import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/widgets/animated_collapse.dart';
 import 'package:portfolio_3/widgets/mouse_trails/distortion_mouse_trail.dart';
 import 'package:portfolio_3/widgets/mouse_trails/grid_mouse_trail.dart';
+import 'package:portfolio_3/widgets/mouse_trails/ripple_mouse_trail.dart';
 
 class HomePanel extends StatelessWidget {
   final Panel panel;
@@ -57,6 +58,8 @@ class HomePanel extends StatelessWidget {
                     )
                     : panel.trail == MouseTrailType.distortion
                     ? DistortionMouseTrail(child: child ?? SizedBox.shrink())
+                    : panel.trail == MouseTrailType.ripple
+                    ? RippleMouseTrail(child: child ?? SizedBox.shrink())
                     : child,
           ),
         ),
