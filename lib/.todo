@@ -1,6 +1,9 @@
 main:
-    ☐ add drag to WebSmoothScroll
-    ☐ refactor projects panel/ripple button
-    ☐ make experience panel
+    ✔ add drag to WebSmoothScroll @done(25-07-15 16:57)
+    ✔ refactor projects panel/ripple button @done(25-07-15 16:57)
+    ✔ make experience panel @done(25-07-15 16:57)
+    ✔ try different logo shadow @done(25-07-15 16:57)
+    ☐ add theme notifier
+    ☐ add projects to thier panel
+    ☐ show projects details
     ☐ credit website/logo inspiration artists
-    ☐ try different logo shadow

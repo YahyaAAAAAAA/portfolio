@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:portfolio_3/utils/constants.dart';
+import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
+import 'package:portfolio_3/utils/theme/theme_notifier.dart';
 import 'package:portfolio_3/widgets/app/app_divider.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/smooth_list.dart';
+import 'package:provider/provider.dart';
 
 class AboutPanel extends StatefulWidget {
   const AboutPanel({super.key});
@@ -14,8 +17,16 @@ class AboutPanel extends StatefulWidget {
   State<AboutPanel> createState() => _AboutPanelState();
 }
 
-class _AboutPanelState extends State<AboutPanel> {
+class _AboutPanelState extends State<AboutPanel> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
+  GifController? _gifController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _gifController = GifController(vsync: this);
+  }
 
   @override
   void dispose() {
@@ -40,7 +51,11 @@ class _AboutPanelState extends State<AboutPanel> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
-                    onPressed: null,
+                    onPressed: () {
+                      context.read<ThemeNotifier>().updatePurple(
+                        Colors.red,
+                      ); // Change to red
+                    },
                     child: LabelMediumText('About'),
                   ),
                 ),
@@ -59,11 +74,19 @@ class _AboutPanelState extends State<AboutPanel> {
                 duration: Duration(milliseconds: k500mill),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Gif(
-                    image: AssetImage('assets/images/model2.gif'),
-                    autostart: Autostart.loop,
-                    width: 250,
-                    height: 250,
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      context.theme.cardColor,
+                      BlendMode.hue,
+                    ),
+                    child: Gif(
+                      controller: _gifController,
+                      image: AssetImage(kDecorationModel1),
+                      autostart: Autostart.loop,
+                      fps: 60,
+                      width: 250,
+                      height: 250,
+                    ),
                   ),
                 ),
               ),
@@ -91,7 +114,7 @@ class _AboutPanelState extends State<AboutPanel> {
                 child: BodySmallText('With a focus on app development'),
               ),
 
-              20.height,
+              10.height,
 
               FadeInUp(
                 duration: Duration(milliseconds: k500mill),
@@ -109,11 +132,18 @@ class _AboutPanelState extends State<AboutPanel> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Gif(
-                        image: AssetImage('assets/images/model4.gif'),
-                        autostart: Autostart.loop,
-                        width: 150,
-                        height: 150,
+                      ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          context.theme.cardColor,
+                          BlendMode.hue,
+                        ),
+                        child: Gif(
+                          image: AssetImage(kDecorationModel2),
+                          autostart: Autostart.loop,
+                          fps: 60,
+                          width: 150,
+                          height: 150,
+                        ),
                       ),
                       SizedBox(
                         width: 200,

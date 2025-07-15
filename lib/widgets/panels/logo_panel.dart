@@ -44,17 +44,11 @@ class _LogoPanelState extends State<LogoPanel> with TickerProviderStateMixin {
               builder: (context, child) {
                 return Opacity(
                   opacity: _opacityAnimation.value,
-                  child: Image.asset(
-                    'assets/images/logo_filled_shadow.png',
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.asset(kLogoFilledImage, fit: BoxFit.cover),
                 );
               },
             ),
-            Image.asset(
-              'assets/images/logo_inside_app_shadow.png',
-              fit: BoxFit.cover,
-            ),
+            Image.asset(kLogoImage, fit: BoxFit.cover),
           ],
         ),
       ),

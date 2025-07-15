@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/pages/home_page.dart';
-import 'package:portfolio_3/utils/constants.dart';
-import 'package:portfolio_3/utils/global_colors.dart';
+import 'package:portfolio_3/utils/theme/app_theme.dart';
+import 'package:portfolio_3/utils/theme/theme_notifier.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(App());
+  runApp(
+    ChangeNotifierProvider(create: (_) => ThemeNotifier(), child: const App()),
+  );
 }
 
 class App extends StatelessWidget {
@@ -14,78 +17,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final purple = context.watch<ThemeNotifier>().purple;
     return MaterialApp(
       title: 'Portfolio',
+      themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: kFontFamily,
-        scaffoldBackgroundColor: GColors.black,
-        primaryColor: GColors.darkPurple,
-        cardColor: GColors.darkPurple,
-        canvasColor: GColors.purple,
-        splashColor: GColors.persianIndigo,
-        disabledColor: GColors.lightGrey,
-        iconTheme: IconThemeData(color: GColors.white, size: kIconSizeMedium),
-        appBarTheme: AppBarTheme(
-          iconTheme: IconThemeData(color: GColors.white, size: kIconSizeMedium),
-          backgroundColor: GColors.darkPurple,
-        ),
-        dividerColor: GColors.indigo,
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            // foregroundColor: GColors.indigo,
-            backgroundColor: GColors.indigo,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(kOuterBorderRadius),
-            ),
-          ),
-        ),
-        iconButtonTheme: IconButtonThemeData(
-          style: IconButton.styleFrom(
-            backgroundColor: GColors.indigo,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(kOuterBorderRadius),
-            ),
-          ),
-        ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: GColors.darkPurple,
-          onSurface: GColors.white,
-        ),
-      ),
+      theme: getAppTheme(purple: purple),
       home: HomePage(),
     );
   }
 }
-
-  // duration: Duration(milliseconds: 300),
-                                    // //size transition
-                                    // transitionBuilder:
-                                    //     (child, animation) => ScaleTransition(
-                                    //       scale: CurvedAnimation(
-                                    //         parent: animation,
-                                    //         curve: Curves.elasticInOut,
-                                    //       ),
-                                    //       child: FadeTransition(
-                                    //         opacity: animation,
-                                    //         child: child,
-                                    //       ),
-                                    //     ),
-                                    // baseChild: ModelViewer(
-                                    //   backgroundColor: Colors.transparent,
-                                    //   src: 'assets/images/liz.glb',
-                                    //   alt: 'A 3D model of an astronaut',
-                                    //   ar: true,
-                                    //   shadowIntensity: 0.5,
-                                    //   shadowSoftness: 0.5,
-                                    //   autoRotate: true,
-                                    //   disablePan: true,
-                                    //   disableZoom: true,
-                                    //   environmentImage: 'legacy',
-                                    //   disableTap: true,
-                                    //   cameraControls: true,
-                                    //   cameraOrbit: '-90deg',
-                                    //   rotationPerSecond: '700%',
-                                    //   autoRotateDelay: 0,
-                                    //   interactionPrompt: InteractionPrompt.none,
-                                    // ),

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-
 import 'package:portfolio_3/utils/constants.dart';
-import 'package:portfolio_3/utils/global_colors.dart';
+import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 
 /// A wrapper widget that adds grid-based mouse trail effects to any child widget
 class GridMouseTrail extends StatefulWidget {
   final Widget child;
-  final Color trailColor;
+  final Color? trailColor;
   final double cellSize;
   final int startingAlpha;
   final double probOfNeighbor;
@@ -17,8 +16,7 @@ class GridMouseTrail extends StatefulWidget {
   const GridMouseTrail({
     super.key,
     required this.child,
-    // this.trailColor = const Color(0xFF7A5C9E),
-    this.trailColor = GColors.purple,
+    this.trailColor,
     this.cellSize = 15,
     this.startingAlpha = 100,
     this.probOfNeighbor = 0.3,
@@ -174,7 +172,8 @@ class _GridMouseTrailState extends State<GridMouseTrail>
                           currentRow: currentRow,
                           currentCol: currentCol,
                           cellSize: widget.cellSize,
-                          trailColor: widget.trailColor,
+                          trailColor:
+                              widget.trailColor ?? context.theme.canvasColor,
                           startingAlpha: widget.startingAlpha,
                           size: size,
                         ),

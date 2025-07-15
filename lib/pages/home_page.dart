@@ -89,8 +89,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       child: ProjectsPanel(
                         itemBuilder:
                             (context, index) => ProjectButton(
-                              width: 180,
-                              height: 160,
                               onPressed:
                                   () => setState(() => projectIndex = index),
                             ),

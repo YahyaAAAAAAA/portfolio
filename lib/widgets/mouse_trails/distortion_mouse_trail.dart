@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
+import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'dart:math' as math;
-import 'package:portfolio_3/utils/global_colors.dart';
 
 /// A wrapper widget that adds circular noise/distortion trail effects around the mouse
 class DistortionMouseTrail extends StatefulWidget {
   final Widget child;
-  final Color noiseColor;
+  final Color? noiseColor;
   final double circleRadius;
   final int noiseParticles;
   final double particleSize;
@@ -18,7 +18,7 @@ class DistortionMouseTrail extends StatefulWidget {
   const DistortionMouseTrail({
     super.key,
     required this.child,
-    this.noiseColor = GColors.purple,
+    this.noiseColor,
     this.circleRadius = 50.0,
     this.noiseParticles = 150,
     this.particleSize = 1.5,
@@ -155,7 +155,8 @@ class _DistortionMouseTrailState extends State<DistortionMouseTrail>
                   child: CustomPaint(
                     painter: DistortionPainter(
                       particles: allParticles,
-                      noiseColor: widget.noiseColor,
+                      noiseColor:
+                          widget.noiseColor ?? context.theme.canvasColor,
                       mousePosition: currentMousePosition,
                       circleRadius: widget.circleRadius,
                     ),
