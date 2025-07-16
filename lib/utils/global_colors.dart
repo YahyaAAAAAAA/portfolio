@@ -10,3 +10,14 @@ class GColors {
   static Color lightGrey = Color(0xFFAFAFAF);
   static Color transparent = Color(0x00000000);
 }
+
+// class GColors {
+//   static Color black = Color(0xFFf3f3f3);
+//   static Color white = Color.fromARGB(255, 0, 0, 0);
+//   static Color purple = Color.fromARGB(255, 255, 255, 255);
+//   static Color darkPurple = Color(0xFFfcfcfc);
+//   static Color indigo = Color(0xFFf3f3f3);
+//   static Color persianIndigo = Color(0xFFe5dbfc);
+//   static Color lightGrey = Color(0xFFAFAFAF);
+//   static Color transparent = Color(0x00000000);
+// }

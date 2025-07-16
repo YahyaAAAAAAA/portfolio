@@ -51,12 +51,12 @@ class ExperienceButton extends StatelessWidget {
               child: ListView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  //black-white filter
                   ColoredBox(
-                    color: context.theme.disabledColor,
+                    color: context.theme.dividerColor,
+                    //black-white filter
                     child: ColorFiltered(
                       colorFilter: ColorFilter.mode(
-                        context.theme.cardColor.withValues(alpha: alpha),
+                        context.theme.dividerColor.withValues(alpha: alpha),
                         BlendMode.color,
                       ),
                       child: Image.asset(

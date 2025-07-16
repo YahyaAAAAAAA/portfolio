@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/models/panels_manager.dart';
+import 'package:portfolio_3/models/projects_manager.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_app_bar.dart';
 import 'package:portfolio_3/widgets/panels/about_panel.dart';
 import 'package:portfolio_3/widgets/panels/experience_panel.dart';
 import 'package:portfolio_3/widgets/panels/logo_panel.dart';
+import 'package:portfolio_3/widgets/panels/project_display_panel.dart';
 import 'package:portfolio_3/widgets/panels/projects_panel.dart';
 import 'package:portfolio_3/widgets/panels/home_panel.dart';
 import 'package:portfolio_3/widgets/project_button.dart';
@@ -87,8 +89,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     HomePanel(
                       panel: panelsManager.panel2,
                       child: ProjectsPanel(
+                        itemCount: ProjectsManager.projects.length,
                         itemBuilder:
                             (context, index) => ProjectButton(
+                              project: ProjectsManager.projects[index],
+                              onEnter:
+                                  () => setState(
+                                    () =>
+                                        ProjectsManager
+                                            .projects[index]
+                                            .isHovered = true,
+                                  ),
+                              onExit:
+                                  () => setState(
+                                    () =>
+                                        ProjectsManager
+                                            .projects[index]
+                                            .isHovered = false,
+                                  ),
                               onPressed:
                                   () => setState(() => projectIndex = index),
                             ),
@@ -111,7 +129,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     //top
                     HomePanel(
                       panel: panelsManager.panel3,
-                      child: Text('Projects Display $projectIndex'),
+                      child: ProjectDisplayPanel(
+                        project: ProjectsManager.projects[projectIndex],
+                      ),
                     ),
                     //bottom
                     HomePanel(

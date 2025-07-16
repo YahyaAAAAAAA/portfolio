@@ -8,7 +8,7 @@ ThemeData getAppTheme({required Color purple}) {
     scaffoldBackgroundColor: GColors.black,
     primaryColor: GColors.darkPurple,
     cardColor: GColors.darkPurple,
-    canvasColor: purple,
+    canvasColor: GColors.purple,
     splashColor: GColors.persianIndigo,
     disabledColor: GColors.lightGrey,
     iconTheme: IconThemeData(color: GColors.white, size: kIconSizeMedium),

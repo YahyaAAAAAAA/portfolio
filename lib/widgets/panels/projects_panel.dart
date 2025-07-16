@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
-import 'package:portfolio_3/widgets/project_button.dart';
+import 'package:portfolio_3/widgets/ripple_button.dart';
 import 'package:portfolio_3/widgets/smooth_list.dart';
 
 class ProjectsPanel extends StatefulWidget {
   final Widget Function(BuildContext context, int index) itemBuilder;
+  final int itemCount;
 
-  const ProjectsPanel({super.key, required this.itemBuilder});
+  const ProjectsPanel({
+    super.key,
+    required this.itemBuilder,
+    required this.itemCount,
+  });
 
   @override
   State<ProjectsPanel> createState() => _ProjectsPanelState();
@@ -46,7 +51,7 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
               ),
               Row(
                 children: [
-                  ProjectButton(
+                  RippleButton(
                     width: 30,
                     height: 30,
 
@@ -59,10 +64,9 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
                     child: Icon(Icons.arrow_back_rounded),
                   ),
                   10.width,
-                  ProjectButton(
+                  RippleButton(
                     width: 30,
                     height: 30,
-
                     onPressed:
                         () => _scrollController.animateTo(
                           _scrollController.position.pixels + 200,
@@ -94,7 +98,7 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: widget.itemBuilder,
                     separatorBuilder: (context, index) => 10.width,
-                    itemCount: 10,
+                    itemCount: widget.itemCount,
                   ),
                 ),
               ),
