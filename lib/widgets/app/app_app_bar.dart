@@ -15,15 +15,15 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(kAppBarHeight),
+      preferredSize: const Size.fromHeight(kAppBarHeight),
       child: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(kOuterBorderRadius),
           child: AppBar(
             leadingWidth: 120,
-            leading: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+            leading: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 spacing: 10,
                 children: [
@@ -33,7 +33,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             centerTitle: true,
-            actions: [SizedBox(width: 120)],
+            actions: [const SizedBox(width: 120)],
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
@@ -54,5 +54,5 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kAppBarHeight);
+  Size get preferredSize => const Size.fromHeight(kAppBarHeight);
 }

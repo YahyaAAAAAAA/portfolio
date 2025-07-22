@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/global_colors.dart';
 
-ThemeData getAppTheme({required Color purple}) {
+ThemeData getAppTheme() {
   return ThemeData(
     fontFamily: kFontFamily,
     scaffoldBackgroundColor: GColors.black,
@@ -37,12 +37,18 @@ ThemeData getAppTheme({required Color purple}) {
       style: OutlinedButton.styleFrom(
         side: BorderSide.none,
         iconColor: GColors.white,
-        padding: EdgeInsets.all(kPanelPaddingSmall),
-        minimumSize: Size(30, 30),
-        fixedSize: Size(30, 30),
+        padding: const EdgeInsets.all(kPanelPaddingSmall),
+        minimumSize: const Size(30, 30),
+        fixedSize: const Size(30, 30),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kOuterBorderRadius),
         ),
+      ),
+    ),
+    dialogTheme: DialogTheme(
+      backgroundColor: GColors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(kOuterBorderRadius),
       ),
     ),
     colorScheme: ColorScheme.fromSeed(

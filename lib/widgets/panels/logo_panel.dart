@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/widgets/wrappers/grid_3d_wrapper.dart';
@@ -18,7 +19,7 @@ class _LogoPanelState extends State<LogoPanel> with TickerProviderStateMixin {
     super.initState();
 
     _opacityController = AnimationController(
-      duration: Duration(milliseconds: k2000mill),
+      duration: const Duration(milliseconds: k2000mill),
       vsync: this,
     );
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -44,11 +45,26 @@ class _LogoPanelState extends State<LogoPanel> with TickerProviderStateMixin {
               builder: (context, child) {
                 return Opacity(
                   opacity: _opacityAnimation.value,
-                  child: Image.asset(kLogoFilledImage, fit: BoxFit.cover),
+                  child: CachedNetworkImage(
+                    imageUrl: kLogoFilledImage,
+                    fit: BoxFit.cover,
+                    placeholder:
+                        (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                    errorWidget:
+                        (context, url, error) =>
+                            const Center(child: Icon(Icons.error)),
+                  ),
                 );
               },
             ),
-            Image.asset(kLogoImage, fit: BoxFit.cover),
+            CachedNetworkImage(
+              imageUrl: kLogoImage,
+              fit: BoxFit.cover,
+              placeholder:
+                  (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+            ),
           ],
         ),
       ),

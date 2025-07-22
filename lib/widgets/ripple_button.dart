@@ -7,6 +7,11 @@ class RippleButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final double width;
   final double height;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final Color? rippleColor;
+  final double? rippleRadius;
+  final bool? centerChild;
   final Widget? child;
 
   const RippleButton({
@@ -15,26 +20,36 @@ class RippleButton extends StatelessWidget {
     this.onPressed,
     this.width = 180,
     this.height = 160,
+    this.backgroundColor,
+    this.borderColor,
+    this.rippleColor,
+    this.centerChild = true,
+    this.rippleRadius = 1.2,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
-      child: RippleMouseTrail(
-        cursor: SystemMouseCursors.click,
-        baseColor: context.theme.cardColor,
-
-        rippleRadius: 1.2,
-        child: ClipRRect(
-          child: Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(kOuterBorderRadius),
-              border: Border.all(color: context.theme.dividerColor),
+      child: ClipRRect(
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(kOuterBorderRadius),
+            border: Border.all(
+              color: borderColor ?? context.theme.dividerColor,
             ),
-            child: child,
+          ),
+          child: RippleMouseTrail(
+            cursor: SystemMouseCursors.click,
+            rippleColor: rippleColor ?? context.theme.splashColor,
+            baseColor: backgroundColor ?? context.theme.cardColor,
+            rippleRadius: rippleRadius ?? 1.2,
+            child:
+                centerChild == true
+                    ? Center(child: child ?? const SizedBox.shrink())
+                    : child ?? const SizedBox.shrink(),
           ),
         ),
       ),

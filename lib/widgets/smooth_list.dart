@@ -45,7 +45,7 @@ class SmoothList extends StatefulWidget {
   State<SmoothList> createState() => _SmoothListState();
 }
 
-class _SmoothListState extends State<SmoothList> {
+class _SmoothListState extends State<SmoothList> with TickerProviderStateMixin {
   // data variables
   double _scroll = 0;
   bool _isAnimating = false;
@@ -75,7 +75,14 @@ class _SmoothListState extends State<SmoothList> {
 
   @override
   Widget build(BuildContext context) {
-    return Listener(onPointerSignal: onPointerSignal, child: widget.child);
+    return ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+      child: Listener(
+        onPointerSignal: onPointerSignal,
+        // onPointerMove: onPointerMove,
+        child: widget.child,
+      ),
+    );
   }
 
   /// Member Functions
@@ -118,7 +125,7 @@ class _SmoothListState extends State<SmoothList> {
           curve: widget.curve,
         )
         .then((_) {
-          setState(() => _isAnimating = false);
+          if (mounted) setState(() => _isAnimating = false);
         });
 
     setState(() => _isAnimating = true);
@@ -146,5 +153,10 @@ class _SmoothListState extends State<SmoothList> {
         widget.controller.jumpTo(newOffset);
       }
     }
+  }
+
+  void onPointerMove(PointerMoveEvent pointerMove) {
+    // Apply smooth scrolling for mouse drag
+    _smoothScrollTo(-pointerMove.delta.dy);
   }
 }

@@ -28,15 +28,15 @@ class HomePanel extends StatelessWidget {
     return Align(
       alignment: panel.alignment ?? Alignment.center,
       child: AnimatedCollapse(
-        duration: Duration(milliseconds: k500mill),
+        duration: const Duration(milliseconds: k500mill),
         curve: Curves.easeInOutCubic,
         collapsed: !panel.enabled,
         axis: panel.axis ?? Axis.horizontal,
-        reverseDuration: Duration(milliseconds: k500mill),
+        reverseDuration: const Duration(milliseconds: k500mill),
         child: Padding(
-          padding: EdgeInsets.all(kPanelPaddingSmall),
+          padding: const EdgeInsets.all(kPanelPaddingSmall),
           child: AnimatedContainer(
-            duration: Duration(milliseconds: k500mill),
+            duration: const Duration(milliseconds: k500mill),
             curve: Curves.easeInOutCubic,
             width: panel.width,
             height: panel.height,
@@ -54,12 +54,14 @@ class HomePanel extends StatelessWidget {
                 panel.trail == MouseTrailType.grid
                     ? GridMouseTrail(
                       trailColor: context.theme.canvasColor,
-                      child: child ?? SizedBox.shrink(),
+                      child: child ?? const SizedBox.shrink(),
                     )
                     : panel.trail == MouseTrailType.distortion
-                    ? DistortionMouseTrail(child: child ?? SizedBox.shrink())
+                    ? DistortionMouseTrail(
+                      child: child ?? const SizedBox.shrink(),
+                    )
                     : panel.trail == MouseTrailType.ripple
-                    ? RippleMouseTrail(child: child ?? SizedBox.shrink())
+                    ? RippleMouseTrail(child: child ?? const SizedBox.shrink())
                     : child,
           ),
         ),

@@ -24,10 +24,10 @@ class NoiseWrapper extends StatelessWidget {
               child: Opacity(
                 opacity: opacity!,
                 child: Gif(
-                  image: AssetImage('assets/images/noise.gif'),
+                  image: const AssetImage('assets/images/noise.gif'),
                   fit: BoxFit.cover,
                   autostart: Autostart.loop,
-                  placeholder: (context) => Text('Loading...'),
+                  placeholder: (context) => const Text('Loading...'),
                 ),
               ),
             ),

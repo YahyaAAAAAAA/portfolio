@@ -10,6 +10,11 @@ class ProjectsManager {
       platform: 'Cross-Platform',
       type: 'Application',
       isHovered: false,
+      screenshots: kEventsJoScreenshots,
+      segments: kEventsJoSegments,
+      github: kEventsJoGithub,
+      video: kEventsJoVideo,
+      website: kEventsJoWebsite,
     ),
     Project(
       name: 'Concentrated',
@@ -17,6 +22,9 @@ class ProjectsManager {
       banner: kConcentratedBanner,
       platform: 'Cross-Platform',
       type: 'Application',
+      screenshots: kConcentratedScreenshots,
+      segments: kConcentratedSegments,
+      github: kConcentratedGithub,
       isHovered: false,
     ),
     Project(
@@ -25,6 +33,11 @@ class ProjectsManager {
       banner: kSquareoBanner,
       platform: 'Cross-Platform',
       type: 'Application',
+      screenshots: kSquareoScreenshots,
+      segments: kSquareoSegments,
+      github: kSquareoGithub,
+      website: kSquareoWebsite,
+      video: kSquareoVideo,
       isHovered: false,
     ),
     Project(
@@ -33,6 +46,9 @@ class ProjectsManager {
       banner: kAudioResumerBanner,
       platform: 'Web',
       type: 'Extension',
+      screenshots: kAudioResumerScreenshots,
+      segments: kAudioResumerSegments,
+      github: kAudioResumerGithub,
       isHovered: false,
     ),
     Project(
@@ -41,6 +57,9 @@ class ProjectsManager {
       banner: kDrawOverItBanner,
       platform: 'Desktop',
       type: 'Application',
+      segments: kDrawOverItSegments,
+      github: kDrawOverItGithub,
+      video: kDrawOverItVideo,
       isHovered: false,
     ),
     Project(
@@ -49,6 +68,8 @@ class ProjectsManager {
       banner: kWindowsSidebarBanner,
       platform: 'Windows',
       type: 'Application',
+      segments: kWindowsSidebarSegments,
+      github: kWindowsSidebarGithub,
       isHovered: false,
     ),
     Project(
@@ -57,6 +78,9 @@ class ProjectsManager {
       banner: kRapidRoundsBanner,
       platform: 'Mobile',
       type: 'Application',
+      segments: kRapidRoundsSegments,
+      github: kRapidRoundsGithub,
+      screenshots: kRapidRoundsScreenshots,
       isHovered: false,
     ),
     Project(
@@ -65,6 +89,8 @@ class ProjectsManager {
       banner: kPortfolioBanner,
       platform: 'Web',
       type: 'Website',
+      segments: kPortfolioSegments,
+      github: kPortfolioGithub,
       isHovered: false,
     ),
     Project(
@@ -73,6 +99,8 @@ class ProjectsManager {
       banner: kEventsJoBackendBanner,
       platform: 'Cross-Platform',
       type: 'Backend',
+      segments: kEventsJoBackendSegments,
+      github: kEventsJoBackendGithub,
       isHovered: false,
     ),
   ];

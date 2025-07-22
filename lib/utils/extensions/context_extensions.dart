@@ -2,6 +2,29 @@ import 'package:flutter/material.dart';
 
 // Context Extensions
 extension ContextExtensions on BuildContext {
+  //animated dialog
+  Future<Object?> dialog({
+    required Widget Function(BuildContext, Animation<double>, Animation<double>)
+    pageBuilder,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+    transitionBuilder,
+    bool? barrierDismissible,
+    Duration? transitionDuration,
+  }) async {
+    return showGeneralDialog(
+      context: this,
+      pageBuilder: pageBuilder,
+      barrierLabel: '',
+      barrierDismissible: barrierDismissible ?? true,
+      transitionDuration:
+          transitionDuration ?? const Duration(milliseconds: 200),
+      //slide from bottom
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+    );
+  }
+
   /// return screen size
   Size size() => MediaQuery.sizeOf(this);
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/models/project.dart';
 import 'package:portfolio_3/utils/constants.dart';
@@ -27,6 +28,7 @@ class ProjectButton extends StatelessWidget {
       onExit: (event) => onExit?.call(),
       child: RippleButton(
         onPressed: onPressed,
+        centerChild: false,
         child: Padding(
           padding: const EdgeInsets.all(kPanelPaddingMedium),
           child: Column(
@@ -38,16 +40,29 @@ class ProjectButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100),
                 child: ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    context.theme.dividerColor.withValues(
+                    context.theme.cardColor.withValues(
                       alpha: project.isHovered ? 0 : 0.7,
                     ),
                     BlendMode.color,
                   ),
-                  child: Image.asset(project.logo!, width: 60, height: 60),
+                  child: CachedNetworkImage(
+                    imageUrl: project.logo!,
+                    placeholder:
+                        (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                    errorWidget:
+                        (context, url, error) => Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: context.theme.canvasColor,
+                          ),
+                        ),
+                    width: 60,
+                    height: 60,
+                  ),
                 ),
               ),
 
-              Spacer(),
+              const Spacer(),
               //name
               BodyMediumText(project.name),
               //platform

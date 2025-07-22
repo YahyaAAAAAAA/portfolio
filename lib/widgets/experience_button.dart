@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
@@ -49,7 +50,7 @@ class ExperienceButton extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(kOuterBorderRadius),
               child: ListView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   ColoredBox(
                     color: context.theme.dividerColor,
@@ -59,15 +60,22 @@ class ExperienceButton extends StatelessWidget {
                         context.theme.dividerColor.withValues(alpha: alpha),
                         BlendMode.color,
                       ),
-                      child: Image.asset(
-                        image,
+                      child: CachedNetworkImage(
+                        imageUrl: image,
+                        placeholder:
+                            (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                        errorWidget:
+                            (context, url, error) =>
+                                const Center(child: Icon(Icons.error)),
                         fit: BoxFit.cover,
                         height: height! / 1.4,
                       ),
                     ),
                   ),
 
-                  AppDivider(thickness: 1, dividerHeight: 1),
+                  const AppDivider(thickness: 1, dividerHeight: 1),
 
                   Padding(
                     padding: const EdgeInsets.only(

@@ -1,3 +1,5 @@
+import 'package:portfolio_3/models/project_segmet.dart';
+
 class Project {
   final String name;
   final String? type;
@@ -5,8 +7,11 @@ class Project {
   final String? logo;
   final String? banner;
   final String? description;
-  final String? link;
-  final List<String>? images;
+  final String? github;
+  final String? website;
+  final String? video;
+  final List<String>? screenshots;
+  final List<ProjectSegment>? segments;
   bool isHovered;
 
   Project({
@@ -16,8 +21,11 @@ class Project {
     this.logo,
     this.banner,
     this.description,
-    this.link,
-    this.images,
+    this.github,
+    this.website,
+    this.video,
+    this.screenshots,
+    this.segments,
     this.isHovered = false,
   });
 }

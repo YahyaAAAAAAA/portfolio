@@ -29,4 +29,34 @@ class Panel {
     this.trail,
     this.alignment,
   });
+
+  Panel copyWith({
+    bool? enabled,
+    bool? isExpanded,
+    double? width,
+    double? height,
+    Color? color,
+    MouseTrailType? trail,
+    double? maxWidth,
+    double? maxHeight,
+    double? minWidth,
+    double? minHeight,
+    Axis? axis,
+    Alignment? alignment,
+  }) {
+    return Panel(
+      enabled: enabled ?? this.enabled,
+      isExpanded: isExpanded ?? this.isExpanded,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      color: color ?? this.color,
+      trail: trail ?? this.trail,
+      maxWidth: maxWidth ?? this.maxWidth,
+      maxHeight: maxHeight ?? this.maxHeight,
+      minWidth: minWidth ?? this.minWidth,
+      minHeight: minHeight ?? this.minHeight,
+      axis: axis ?? this.axis,
+      alignment: alignment ?? this.alignment,
+    );
+  }
 }

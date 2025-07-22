@@ -67,11 +67,19 @@ class PanelsManager {
   PanelsManager(this.context);
 
   void init() {
-    panel0.color = context.theme.cardColor;
-    panel1.color = context.theme.canvasColor;
-    panel2.color = context.theme.cardColor;
-    panel3.color = context.theme.cardColor;
-    panel4.color = context.theme.cardColor;
+    // Add safety checks for context
+    if (!_isContextValid()) return;
+
+    try {
+      panel0.color = context.theme.cardColor;
+      panel1.color = context.theme.canvasColor;
+      panel2.color = context.theme.cardColor;
+      panel3.color = context.theme.cardColor;
+      panel4.color = context.theme.cardColor;
+    } catch (e) {
+      // Fallback to default colors if context is invalid
+      debugPrint('PanelsManager.init() failed: $e');
+    }
   }
 
   //toggle panel
@@ -94,37 +102,70 @@ class PanelsManager {
         break;
     }
 
-    onToggleCheck(context);
+    if (_isContextValid()) {
+      onToggleCheck(context);
+    }
   }
 
   double getPanelHeight(BuildContext context) {
-    if (panel3.enabled && !panel4.enabled) {
-      return context.height() - 88;
-    } else if (!panel3.enabled && panel4.enabled) {
-      return context.height() - 88;
-    } else if (panel3.enabled && panel4.enabled) {
-      return context.height() / 2 - 49;
+    if (!_isContextValid()) return 0;
+
+    try {
+      final screenHeight = MediaQuery.of(context).size.height;
+
+      if (panel3.enabled && !panel4.enabled) {
+        return screenHeight - 88;
+      } else if (!panel3.enabled && panel4.enabled) {
+        return screenHeight - 88;
+      } else if (panel3.enabled && panel4.enabled) {
+        return screenHeight / 2 - 49;
+      }
+      return 0;
+    } catch (e) {
+      debugPrint('getPanelHeight() failed: $e');
+      return 0;
     }
-    return 0;
   }
 
   void onToggleCheck(BuildContext context) {
-    if ((panel3.enabled || panel4.enabled) ||
-        (context.width() < 960) ||
-        panelsEnabled.only([0]) ||
-        panelsEnabled.only([0, 2])) {
-      panel0.maxWidth = context.width() / 4;
-    } else {
-      panel0.maxWidth = 455;
-    }
+    if (!_isContextValid()) return;
 
-    if (panel3.enabled && !panel4.enabled) {
-      panel3.height = context.height() - 88;
-    } else if (!panel3.enabled && panel4.enabled) {
-      panel4.height = context.height() - 88;
-    } else if (panel3.enabled && panel4.enabled) {
-      panel3.height = context.height() / 2 - 49;
-      panel4.height = context.height() / 2 - 49;
+    try {
+      final screenSize = MediaQuery.of(context).size;
+      final screenWidth = screenSize.width;
+      final screenHeight = screenSize.height;
+
+      // Don't update dimensions if in mobile view
+      if (screenWidth < 600) return;
+
+      if ((panel3.enabled || panel4.enabled) ||
+          (screenWidth < 960) ||
+          panelsEnabled.only([0]) ||
+          panelsEnabled.only([0, 2])) {
+        panel0.maxWidth = screenWidth / 4;
+      } else {
+        panel0.maxWidth = 455;
+      }
+
+      if (panel3.enabled && !panel4.enabled) {
+        panel3.height = screenHeight - 88;
+      } else if (!panel3.enabled && panel4.enabled) {
+        panel4.height = screenHeight - 88;
+      } else if (panel3.enabled && panel4.enabled) {
+        panel3.height = screenHeight / 2 - 49;
+        panel4.height = screenHeight / 2 - 49;
+      }
+    } catch (e) {
+      debugPrint('onToggleCheck() failed: $e');
+    }
+  }
+
+  bool _isContextValid() {
+    try {
+      // Try to access context to see if it's still valid
+      return context.mounted;
+    } catch (e) {
+      return false;
     }
   }
 }

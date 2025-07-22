@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
+import 'package:portfolio_3/widgets/horizontal_scroll_behaivor.dart';
 import 'package:portfolio_3/widgets/ripple_button.dart';
 import 'package:portfolio_3/widgets/smooth_list.dart';
 
@@ -32,16 +33,16 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(kPanelPaddingMedium),
+      padding: const EdgeInsets.all(kPanelPaddingMedium),
       child: ListView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               FadeInLeft(
-                duration: Duration(milliseconds: k500mill),
-                child: Align(
+                duration: const Duration(milliseconds: k500mill),
+                child: const Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
                     onPressed: null,
@@ -58,10 +59,10 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
                     onPressed:
                         () => _scrollController.animateTo(
                           _scrollController.position.pixels - 200,
-                          duration: Duration(milliseconds: k500mill),
+                          duration: const Duration(milliseconds: k500mill),
                           curve: Curves.easeInOut,
                         ),
-                    child: Icon(Icons.arrow_back_rounded),
+                    child: const Icon(Icons.arrow_back_rounded),
                   ),
                   10.width,
                   RippleButton(
@@ -70,10 +71,10 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
                     onPressed:
                         () => _scrollController.animateTo(
                           _scrollController.position.pixels + 200,
-                          duration: Duration(milliseconds: k500mill),
+                          duration: const Duration(milliseconds: k500mill),
                           curve: Curves.easeInOut,
                         ),
-                    child: Icon(Icons.arrow_forward_rounded),
+                    child: const Icon(Icons.arrow_forward_rounded),
                   ),
                 ],
               ),
@@ -85,15 +86,12 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
             child: SizedBox(
               height: 160,
               child: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(
-                  context,
-                ).copyWith(scrollbars: true),
+                behavior: HorizontalScrollBehavior(),
                 child: SmoothList(
-                  // enableDrag: false,
                   controller: _scrollController,
                   child: ListView.separated(
                     controller: _scrollController,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: widget.itemBuilder,

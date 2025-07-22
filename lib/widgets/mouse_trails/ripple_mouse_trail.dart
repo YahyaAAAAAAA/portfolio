@@ -41,7 +41,7 @@ class _RippleMouseTrailState extends State<RippleMouseTrail>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
     _animation = Tween<double>(begin: 0.0, end: 1).animate(
@@ -249,7 +249,7 @@ class RipplePainter extends CustomPainter {
   double _calculateMaxRadius(Size size, Offset center) {
     // Calculate distance to all corners and return the maximum
     final distances = [
-      (center - Offset(0, 0)).distance,
+      (center - const Offset(0, 0)).distance,
       (center - Offset(size.width, 0)).distance,
       (center - Offset(0, size.height)).distance,
       (center - Offset(size.width, size.height)).distance,
