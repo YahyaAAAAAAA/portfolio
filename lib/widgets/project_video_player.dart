@@ -17,11 +17,7 @@ class _ProjectVideoPlayerDialogState extends State<ProjectVideoPlayerDialog> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(
-        Uri.parse(
-          'https://res.cloudinary.com/ddixv6xdj/video/upload/v1752747571/EventsJo_Video_w1gxls.mp4',
-        ),
-      )
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});

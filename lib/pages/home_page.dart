@@ -4,6 +4,7 @@ import 'package:portfolio_3/models/projects_manager.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_app_bar.dart';
+import 'package:portfolio_3/widgets/mobile_navbar_button.dart';
 import 'package:portfolio_3/widgets/panels/about_panel.dart';
 import 'package:portfolio_3/widgets/panels/experience_panel.dart';
 import 'package:portfolio_3/widgets/panels/logo_panel.dart';
@@ -23,13 +24,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PanelsManager panelsManager;
   int projectIndex = 0;
-  static const double mobileBreakpoint = 600.0;
+  int mobileTabIndex = 0;
+  final double mobileBreakpoint = 600;
   bool _isInitialized = false;
+  final bool useTabMobileLayout = true;
 
   @override
   void initState() {
     super.initState();
-    // Don't pass context in initState, it might not be fully ready
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         panelsManager = PanelsManager(context);
@@ -43,7 +46,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Initialize here if not already done
+
+    //initialize here if not already done
     if (!_isInitialized) {
       panelsManager = PanelsManager(context);
       panelsManager.init();
@@ -51,18 +55,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
-  bool get isMobileView => MediaQuery.of(context).size.width < mobileBreakpoint;
+  bool get isMobileView => context.width() < mobileBreakpoint;
 
   @override
   Widget build(BuildContext context) {
-    // Don't build if not initialized
+    //don't build if not initialized
     if (!_isInitialized) {
       return const NoiseWrapper(
         child: Scaffold(body: Center(child: CircularProgressIndicator())),
       );
     }
 
-    // Only call onToggleCheck for desktop view and if mounted
+    //only call for desktop view and if mounted
     if (!isMobileView && mounted) {
       panelsManager.onToggleCheck(context);
     }
@@ -70,6 +74,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return NoiseWrapper(
       child: Scaffold(
         appBar: AppAppBar(
+          isMobile: isMobileView,
           panelsEnabled: panelsManager.panelsEnabled,
           onPanelToggle: (index) {
             if (mounted) {
@@ -84,78 +89,319 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             bottom: kPanelPaddingMedium,
             top: kPanelPaddingSmall,
           ),
-          child: isMobileView ? _buildMobileLayout() : _buildDesktopLayout(),
+          child:
+              isMobileView
+                  ? (useTabMobileLayout
+                      ? _buildMobileTabLayout()
+                      : _buildMobileLayout())
+                  : _buildDesktopLayout(),
         ),
       ),
     );
   }
 
+  Widget _buildMobileTabLayout() {
+    final List<Widget> panels = [
+      HomePanel(
+        panel: panelsManager.panel0.copyWith(
+          width: context.width(),
+          height: context.height(),
+          maxWidth: context.width(),
+          axis: Axis.vertical,
+          enabled: true,
+        ),
+        child: const AboutPanel(),
+      ),
+      HomePanel(
+        panel: panelsManager.panel1.copyWith(
+          width: context.width(),
+          height: context.height(),
+          axis: Axis.vertical,
+          isExpanded: false,
+          enabled: true,
+        ),
+        child: const LogoPanel(),
+      ),
+      HomePanel(
+        panel: panelsManager.panel2.copyWith(
+          width: context.width(),
+          height: context.height(),
+          enabled: true,
+        ),
+        child: ProjectsPanel(
+          itemCount: ProjectsManager.projects.length,
+          isMobile: isMobileView,
+          itemBuilder:
+              (context, index) => FittedBox(
+                child: ProjectButton(
+                  borderColor:
+                      projectIndex == index
+                          ? context.theme.canvasColor
+                          : context.theme.dividerColor,
+                  borderWidth: projectIndex == index ? 1.5 : 1,
+                  project: ProjectsManager.projects[index],
+                  onEnter: () {
+                    if (mounted) {
+                      setState(
+                        () => ProjectsManager.projects[index].isHovered = true,
+                      );
+                    }
+                  },
+                  onExit: () {
+                    if (mounted) {
+                      setState(
+                        () => ProjectsManager.projects[index].isHovered = false,
+                      );
+                    }
+                  },
+                  onPressed: () {
+                    if (mounted) {
+                      if (isMobileView) {
+                        mobileTabIndex = 3;
+                      }
+                      setState(() => projectIndex = index);
+                    }
+                  },
+                ),
+              ),
+        ),
+      ),
+      HomePanel(
+        panel: panelsManager.panel3.copyWith(
+          width: context.width(),
+          height: context.height(),
+          enabled: true,
+        ),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: k500mill),
+          transitionBuilder:
+              (child, animation) =>
+                  FadeTransition(opacity: animation, child: child),
+          child: ProjectDisplayPanel(
+            key: ValueKey(ProjectsManager.projects[projectIndex].name),
+            project: ProjectsManager.projects[projectIndex],
+          ),
+        ),
+      ),
+      HomePanel(
+        panel: panelsManager.panel4.copyWith(
+          width: context.width(),
+          height: context.height(),
+          enabled: true,
+        ),
+        child: const ExperiencePanel(),
+      ),
+    ];
+
+    return Scaffold(
+      body: panels[mobileTabIndex],
+      bottomNavigationBar: SizedBox(
+        height: kAppBarHeight,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(kOuterBorderRadius),
+            child: NavigationBar(
+              backgroundColor: context.theme.cardColor,
+              selectedIndex: mobileTabIndex,
+
+              onDestinationSelected: (index) {
+                setState(() {
+                  mobileTabIndex = index;
+                });
+              },
+              destinations: [
+                MobileNavbarButton(
+                  index: 0,
+                  isSelected: mobileTabIndex == 0,
+                  label: 'About',
+                  onPressed: () => setState(() => mobileTabIndex = 0),
+                ),
+                MobileNavbarButton(
+                  index: 1,
+                  isSelected: mobileTabIndex == 1,
+                  label: 'Home',
+                  onPressed: () => setState(() => mobileTabIndex = 1),
+                ),
+                MobileNavbarButton(
+                  index: 2,
+                  isSelected: mobileTabIndex == 2,
+                  label: 'Projects',
+                  onPressed: () => setState(() => mobileTabIndex = 2),
+                ),
+                MobileNavbarButton(
+                  index: 3,
+                  isSelected: mobileTabIndex == 3,
+                  label: 'Display',
+                  onPressed: () => setState(() => mobileTabIndex = 3),
+                ),
+                MobileNavbarButton(
+                  index: 4,
+                  isSelected: mobileTabIndex == 4,
+                  label: 'Experience',
+                  onPressed: () => setState(() => mobileTabIndex = 4),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //old mobile layout it works but
   Widget _buildMobileLayout() {
     return ListView(
       key: const ValueKey('mobile_layout'),
       children: [
-        // About Panel
-        if (panelsManager.panel0.enabled)
-          Padding(
-            padding: const EdgeInsets.only(bottom: kPanelPaddingSmall),
-            child: SizedBox(
-              height: 300, // Fixed height for mobile
-              width: double.infinity, // Ensure full width
-              child: HomePanel(
-                panel: panelsManager.panel0.copyWith(
-                  width: double.infinity,
-                  height: 300,
-                  maxWidth: double.infinity,
-                  minWidth: 0,
-                  maxHeight: 300,
-                  minHeight: 300,
-                  axis: Axis.vertical, // Change to vertical for mobile
+        //about panel
+        HomePanel(
+          panel: panelsManager.panel0.copyWith(
+            width: double.infinity,
+            height: 300,
+            maxWidth: double.infinity,
+            minWidth: 0,
+            maxHeight: 300,
+            minHeight: 300,
+            axis: Axis.vertical,
+          ),
+          child: const AboutPanel(),
+        ),
+
+        //logo panel
+        HomePanel(
+          panel: panelsManager.panel1.copyWith(
+            width: double.infinity,
+            height: 200,
+            maxWidth: double.infinity,
+            minWidth: 0,
+            maxHeight: 200,
+            minHeight: 200,
+            axis: Axis.vertical,
+            isExpanded: false,
+          ),
+          child: const LogoPanel(),
+        ),
+
+        //projects panel
+        HomePanel(
+          panel: panelsManager.panel2.copyWith(
+            width: double.infinity,
+            maxWidth: double.infinity,
+            minWidth: 0,
+          ),
+          child: ProjectsPanel(
+            itemCount: ProjectsManager.projects.length,
+            itemBuilder:
+                (context, index) => ProjectButton(
+                  project: ProjectsManager.projects[index],
+                  onEnter: () {
+                    if (mounted) {
+                      setState(
+                        () => ProjectsManager.projects[index].isHovered = true,
+                      );
+                    }
+                  },
+                  onExit: () {
+                    if (mounted) {
+                      setState(
+                        () => ProjectsManager.projects[index].isHovered = false,
+                      );
+                    }
+                  },
+                  onPressed: () {
+                    if (mounted) {
+                      setState(() => projectIndex = index);
+                    }
+                  },
                 ),
-                child: const AboutPanel(),
-              ),
+          ),
+        ),
+
+        //project display panel
+        HomePanel(
+          panel: panelsManager.panel3.copyWith(
+            width: double.infinity,
+            height: 400,
+            maxWidth: double.infinity,
+            minWidth: 0,
+            maxHeight: 400,
+            minHeight: 400,
+          ),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: k500mill),
+            transitionBuilder:
+                (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+            child: ProjectDisplayPanel(
+              key: ValueKey(ProjectsManager.projects[projectIndex].name),
+              project: ProjectsManager.projects[projectIndex],
             ),
           ),
+        ),
 
-        // Logo Panel
-        if (panelsManager.panel1.enabled)
-          Padding(
-            padding: const EdgeInsets.only(bottom: kPanelPaddingSmall),
-            child: SizedBox(
-              height: 200, // Fixed height for mobile
-              width: double.infinity, // Ensure full width
-              child: HomePanel(
-                panel: panelsManager.panel1.copyWith(
-                  width: double.infinity,
-                  height: 200,
-                  maxWidth: double.infinity,
-                  minWidth: 0,
-                  maxHeight: 200,
-                  minHeight: 200,
-                  axis: Axis.vertical, // Change to vertical for mobile
-                  isExpanded: false, // Disable expansion in mobile
-                ),
-                child: const LogoPanel(),
-              ),
-            ),
+        //experience panel
+        HomePanel(
+          panel: panelsManager.panel4.copyWith(
+            width: double.infinity,
+            height: 300,
+            maxWidth: double.infinity,
+            minWidth: 0,
+            maxHeight: 300,
+            minHeight: 300,
           ),
+          child: const ExperiencePanel(),
+        ),
+      ],
+    );
+  }
 
-        // Projects Panel
-        if (panelsManager.panel2.enabled)
-          Padding(
-            padding: const EdgeInsets.only(bottom: kPanelPaddingSmall),
-            child: SizedBox(
-              height: 255, // Keep original height
-              width: double.infinity,
-              child: HomePanel(
-                panel: panelsManager.panel2.copyWith(
-                  width: double.infinity,
-                  maxWidth: double.infinity,
-                  minWidth: 0,
+  Widget _buildDesktopLayout() {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      children: [
+        //first half
+        AnimatedContainer(
+          duration: const Duration(milliseconds: k500mill),
+          curve: Curves.easeInOutCubic,
+          height: context.height(),
+          width:
+              panelsManager.panel3.enabled || panelsManager.panel4.enabled
+                  ? context.width() / 2 - kPanelPaddingMedium
+                  : context.width() - kPanelPaddingMedium * 2,
+          child: Column(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    //top-left
+                    HomePanel(
+                      panel: panelsManager.panel0,
+                      child: const AboutPanel(),
+                    ),
+
+                    //top-right
+                    HomePanel(
+                      panel: panelsManager.panel1,
+                      child: const LogoPanel(),
+                    ),
+                  ],
                 ),
+              ),
+
+              //bottom
+              HomePanel(
+                panel: panelsManager.panel2,
                 child: ProjectsPanel(
                   itemCount: ProjectsManager.projects.length,
                   itemBuilder:
                       (context, index) => ProjectButton(
+                        borderColor:
+                            projectIndex == index
+                                ? context.theme.canvasColor
+                                : context.theme.dividerColor,
+                        borderWidth: projectIndex == index ? 1.5 : 1,
                         project: ProjectsManager.projects[index],
                         onEnter: () {
                           if (mounted) {
@@ -183,153 +429,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                 ),
               ),
-            ),
-          ),
-
-        // Project Display Panel
-        if (panelsManager.panel3.enabled)
-          Padding(
-            padding: const EdgeInsets.only(bottom: kPanelPaddingSmall),
-            child: SizedBox(
-              height: 400, // Fixed height for mobile
-              width: double.infinity,
-              child: HomePanel(
-                panel: panelsManager.panel3.copyWith(
-                  width: double.infinity,
-                  height: 400,
-                  maxWidth: double.infinity,
-                  minWidth: 0,
-                  maxHeight: 400,
-                  minHeight: 400,
-                ),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  transitionBuilder:
-                      (child, animation) =>
-                          FadeTransition(opacity: animation, child: child),
-                  child: ProjectDisplayPanel(
-                    key: ValueKey(ProjectsManager.projects[projectIndex].name),
-                    project: ProjectsManager.projects[projectIndex],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-        // Experience Panel
-        if (panelsManager.panel4.enabled)
-          Padding(
-            padding: const EdgeInsets.only(bottom: kPanelPaddingSmall),
-            child: SizedBox(
-              height: 300, // Fixed height for mobile
-              width: double.infinity,
-              child: HomePanel(
-                panel: panelsManager.panel4.copyWith(
-                  width: double.infinity,
-                  height: 300,
-                  maxWidth: double.infinity,
-                  minWidth: 0,
-                  maxHeight: 300,
-                  minHeight: 300,
-                ),
-                child: const ExperiencePanel(),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildDesktopLayout() {
-    return ListView(
-      physics: const NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      children: [
-        // First half
-        AnimatedContainer(
-          duration: const Duration(milliseconds: k500mill),
-          curve: Curves.easeInOutCubic,
-          height: MediaQuery.of(context).size.height,
-          width:
-              panelsManager.panel3.enabled || panelsManager.panel4.enabled
-                  ? MediaQuery.of(context).size.width / 2 - kPanelPaddingMedium
-                  : MediaQuery.of(context).size.width - kPanelPaddingMedium * 2,
-          child: Column(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    // Top-left
-                    if (panelsManager.panel0.enabled)
-                      HomePanel(
-                        panel: panelsManager.panel0,
-                        child: const AboutPanel(),
-                      ),
-                    // Top-right
-                    if (panelsManager.panel1.enabled)
-                      HomePanel(
-                        panel: panelsManager.panel1,
-                        child: const LogoPanel(),
-                      ),
-                  ],
-                ),
-              ),
-              // Bottom
-              if (panelsManager.panel2.enabled)
-                HomePanel(
-                  panel: panelsManager.panel2,
-                  child: ProjectsPanel(
-                    itemCount: ProjectsManager.projects.length,
-                    itemBuilder:
-                        (context, index) => ProjectButton(
-                          project: ProjectsManager.projects[index],
-                          onEnter: () {
-                            if (mounted) {
-                              setState(
-                                () =>
-                                    ProjectsManager.projects[index].isHovered =
-                                        true,
-                              );
-                            }
-                          },
-                          onExit: () {
-                            if (mounted) {
-                              setState(
-                                () =>
-                                    ProjectsManager.projects[index].isHovered =
-                                        false,
-                              );
-                            }
-                          },
-                          onPressed: () {
-                            if (mounted) {
-                              setState(() => projectIndex = index);
-                            }
-                          },
-                        ),
-                  ),
-                ),
             ],
           ),
         ),
-        // Second half
+        //second half
         AnimatedContainer(
           duration: const Duration(milliseconds: k500mill),
           curve: Curves.easeInOutCubic,
           height: context.height(),
           width:
               panelsManager.panel3.enabled || panelsManager.panel4.enabled
-                  ? MediaQuery.of(context).size.width / 2 - kPanelPaddingMedium
+                  ? context.width() / 2 - kPanelPaddingMedium
                   : 0,
           child:
               panelsManager.panel3.enabled || panelsManager.panel4.enabled
                   ? Stack(
                     children: [
-                      // Top
+                      //top
                       HomePanel(
                         panel: panelsManager.panel3,
                         child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: k500mill),
                           transitionBuilder:
                               (child, animation) => FadeTransition(
                                 opacity: animation,
@@ -343,7 +463,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      // Bottom
+                      //bottom
                       HomePanel(
                         panel: panelsManager.panel4,
                         child: const ExperiencePanel(),

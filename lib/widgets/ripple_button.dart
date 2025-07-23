@@ -13,6 +13,7 @@ class RippleButton extends StatelessWidget {
   final double? rippleRadius;
   final bool? centerChild;
   final Widget? child;
+  final double? borderWidth;
 
   const RippleButton({
     super.key,
@@ -25,6 +26,7 @@ class RippleButton extends StatelessWidget {
     this.rippleColor,
     this.centerChild = true,
     this.rippleRadius = 1.2,
+    this.borderWidth = 1,
   });
 
   @override
@@ -39,6 +41,7 @@ class RippleButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(kOuterBorderRadius),
             border: Border.all(
               color: borderColor ?? context.theme.dividerColor,
+              width: borderWidth ?? 1,
             ),
           ),
           child: RippleMouseTrail(

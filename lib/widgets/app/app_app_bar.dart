@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
+import 'package:portfolio_3/widgets/mobile_navbar_button.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final bool isMobile;
   final List<bool> panelsEnabled;
   final Function(int) onPanelToggle;
 
   const AppAppBar({
     super.key,
+    required this.isMobile,
     required this.panelsEnabled,
     required this.onPanelToggle,
   });
@@ -21,32 +24,48 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(kOuterBorderRadius),
           child: AppBar(
-            leadingWidth: 120,
+            leadingWidth: 160,
             leading: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 spacing: 10,
                 children: [
                   Icon(Icons.person_4_rounded),
-                  BodyMediumText('Portfolio'),
+                  BodyMediumText('Yahya Amarneh'),
                 ],
               ),
             ),
             centerTitle: true,
             actions: [const SizedBox(width: 120)],
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                panelsEnabled.length,
-                (index) => IconButton(
-                  onPressed: () => onPanelToggle(index),
-                  icon: Icon(
-                    size: kIconSizeSmall,
-                    panelsEnabled[index] ? Icons.circle : Icons.circle_outlined,
-                  ),
-                ),
-              ),
-            ),
+            title:
+                !isMobile
+                    ? FittedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          panelsEnabled.length,
+                          (index) =>
+                              index == 1
+                                  ? const SizedBox.shrink()
+                                  : MobileNavbarButton(
+                                    index: index,
+                                    isSelected: panelsEnabled[index],
+                                    label:
+                                        index == 0
+                                            ? 'About'
+                                            : index == 1
+                                            ? 'Home'
+                                            : index == 2
+                                            ? 'Projects'
+                                            : index == 3
+                                            ? 'Project Display'
+                                            : 'Experience',
+                                    onPressed: () => onPanelToggle(index),
+                                  ),
+                        ),
+                      ),
+                    )
+                    : null,
           ),
         ),
       ),

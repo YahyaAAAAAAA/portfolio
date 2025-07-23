@@ -11,6 +11,8 @@ class ProjectButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final VoidCallback? onEnter;
   final VoidCallback? onExit;
+  final Color? borderColor;
+  final double? borderWidth;
 
   const ProjectButton({
     super.key,
@@ -18,6 +20,8 @@ class ProjectButton extends StatelessWidget {
     this.onPressed,
     this.onEnter,
     this.onExit,
+    this.borderColor,
+    this.borderWidth,
   });
 
   @override
@@ -27,6 +31,8 @@ class ProjectButton extends StatelessWidget {
       onEnter: (event) => onEnter?.call(),
       onExit: (event) => onExit?.call(),
       child: RippleButton(
+        borderColor: borderColor,
+        borderWidth: borderWidth,
         onPressed: onPressed,
         centerChild: false,
         child: Padding(

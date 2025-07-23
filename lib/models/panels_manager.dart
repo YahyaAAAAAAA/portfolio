@@ -9,16 +9,17 @@ class PanelsManager {
   final BuildContext context;
 
   Panel panel0 = Panel(
+    name: 'About',
     enabled: true,
     height: double.infinity,
     width: 455,
     color: GColors.darkPurple,
     trail: MouseTrailType.grid,
     axis: Axis.horizontal,
-    // maxWidth: 455,
   );
 
   Panel panel1 = Panel(
+    name: 'Home',
     enabled: true,
     isExpanded: true,
     height: double.infinity,
@@ -28,6 +29,7 @@ class PanelsManager {
   );
 
   Panel panel2 = Panel(
+    name: 'Projects',
     enabled: true,
     height: 255,
     width: double.infinity,
@@ -37,6 +39,7 @@ class PanelsManager {
   );
 
   Panel panel3 = Panel(
+    name: 'Project Display',
     enabled: true,
     height: 255,
     width: double.infinity,
@@ -47,6 +50,7 @@ class PanelsManager {
   );
 
   Panel panel4 = Panel(
+    name: 'Experience',
     enabled: true,
     height: 255,
     width: double.infinity,
@@ -77,7 +81,7 @@ class PanelsManager {
       panel3.color = context.theme.cardColor;
       panel4.color = context.theme.cardColor;
     } catch (e) {
-      // Fallback to default colors if context is invalid
+      //fallback to default colors if context is invalid
       debugPrint('PanelsManager.init() failed: $e');
     }
   }
@@ -111,14 +115,14 @@ class PanelsManager {
     if (!_isContextValid()) return 0;
 
     try {
-      final screenHeight = MediaQuery.of(context).size.height;
+      final height = context.height();
 
       if (panel3.enabled && !panel4.enabled) {
-        return screenHeight - 88;
+        return height - 88;
       } else if (!panel3.enabled && panel4.enabled) {
-        return screenHeight - 88;
+        return height - 88;
       } else if (panel3.enabled && panel4.enabled) {
-        return screenHeight / 2 - 49;
+        return height / 2 - 49;
       }
       return 0;
     } catch (e) {
@@ -131,29 +135,34 @@ class PanelsManager {
     if (!_isContextValid()) return;
 
     try {
-      final screenSize = MediaQuery.of(context).size;
-      final screenWidth = screenSize.width;
-      final screenHeight = screenSize.height;
+      final width = context.width();
+      final height = context.height();
 
-      // Don't update dimensions if in mobile view
-      if (screenWidth < 600) return;
+      //don't update dimensions if in mobile view
+      if (width < 600) return;
+
+      if (panel2.enabled && height <= 355 && width >= 600) {
+        panel2.height = 0;
+      } else {
+        panel2.height = 255;
+      }
 
       if ((panel3.enabled || panel4.enabled) ||
-          (screenWidth < 960) ||
+          (width < 960) ||
           panelsEnabled.only([0]) ||
           panelsEnabled.only([0, 2])) {
-        panel0.maxWidth = screenWidth / 4;
+        panel0.maxWidth = width / 4;
       } else {
         panel0.maxWidth = 455;
       }
 
       if (panel3.enabled && !panel4.enabled) {
-        panel3.height = screenHeight - 88;
+        panel3.height = height - 88;
       } else if (!panel3.enabled && panel4.enabled) {
-        panel4.height = screenHeight - 88;
+        panel4.height = height - 88;
       } else if (panel3.enabled && panel4.enabled) {
-        panel3.height = screenHeight / 2 - 49;
-        panel4.height = screenHeight / 2 - 49;
+        panel3.height = height / 2 - 49;
+        panel4.height = height / 2 - 49;
       }
     } catch (e) {
       debugPrint('onToggleCheck() failed: $e');
@@ -162,7 +171,6 @@ class PanelsManager {
 
   bool _isContextValid() {
     try {
-      // Try to access context to see if it's still valid
       return context.mounted;
     } catch (e) {
       return false;

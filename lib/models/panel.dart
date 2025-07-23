@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/enums/mouse_trail_types.dart';
 
 class Panel {
+  final String name;
   bool enabled;
   bool? isExpanded;
   double? width;
@@ -16,6 +17,7 @@ class Panel {
   Alignment? alignment;
 
   Panel({
+    required this.name,
     required this.enabled,
     this.isExpanded = false,
     this.width,
@@ -31,6 +33,7 @@ class Panel {
   });
 
   Panel copyWith({
+    String? name,
     bool? enabled,
     bool? isExpanded,
     double? width,
@@ -45,6 +48,7 @@ class Panel {
     Alignment? alignment,
   }) {
     return Panel(
+      name: name ?? this.name,
       enabled: enabled ?? this.enabled,
       isExpanded: isExpanded ?? this.isExpanded,
       width: width ?? this.width,
