@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:portfolio_3/utils/platform_utils.dart';
 
 /// Extra scroll offset to be added while the scroll is happened
 /// Default value is 10
@@ -77,11 +78,10 @@ class _SmoothListState extends State<SmoothList> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ScrollConfiguration(
       behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-      child: Listener(
-        onPointerSignal: onPointerSignal,
-        // onPointerMove: onPointerMove,
-        child: widget.child,
-      ),
+      child:
+          PlatformUtils.isWebMobile
+              ? widget.child
+              : Listener(onPointerSignal: onPointerSignal, child: widget.child),
     );
   }
 

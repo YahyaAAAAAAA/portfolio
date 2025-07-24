@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
+import 'package:portfolio_3/utils/platform_utils.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/horizontal_scroll_behaivor.dart';
 import 'package:portfolio_3/widgets/ripple_button.dart';
@@ -43,7 +44,10 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
                 controller: _scrollController,
                 child: GridView.builder(
                   controller: _scrollController,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics:
+                      PlatformUtils.isWebMobile
+                          ? const NeverScrollableScrollPhysics()
+                          : const BouncingScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: kPanelPaddingMedium,

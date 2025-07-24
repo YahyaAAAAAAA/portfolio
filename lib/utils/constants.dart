@@ -55,7 +55,7 @@ const String kEventsJoLogo =
 const String kEventsJoBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814919/events_jo_banner_abxdan.png';
 const String kEventsJoGithub = 'https://github.com/YahyaAAAAAAA/EventsJo';
-const String kEventsJoWebsite = 'todo';
+const String kEventsJoWebsite = 'https://yahyaaaaaaaa.github.io/events-jo/';
 const String kEventsJoVideo =
     'https://res.cloudinary.com/ddixv6xdj/video/upload/v1752747571/EventsJo_Video_w1gxls.mp4';
 const List<String> kEventsJoScreenshots = [

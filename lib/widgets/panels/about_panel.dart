@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
+import 'package:portfolio_3/utils/platform_utils.dart';
 import 'package:portfolio_3/widgets/app/app_divider.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/smooth_list.dart';
@@ -39,7 +40,10 @@ class _AboutPanelState extends State<AboutPanel> with TickerProviderStateMixin {
       child: SmoothList(
         controller: _scrollController,
         child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
+          physics:
+              PlatformUtils.isWebMobile
+                  ? const NeverScrollableScrollPhysics()
+                  : const BouncingScrollPhysics(),
           controller: _scrollController,
           children: [
             FadeInLeft(

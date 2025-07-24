@@ -14,7 +14,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Portfolio',
+      title: 'Yahya Amarneh',
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       theme: getAppTheme(),

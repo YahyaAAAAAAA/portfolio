@@ -5,7 +5,11 @@ main:
     ✔ try different logo shadow @done(25-07-15 16:57)
     ✔ add projects to thier panel @done(25-07-16 11:46)
     ✔ show projects details @done(25-07-16 11:46)
-    ☐ move assets to network
-    ☐ add theme notifier
-    ☐ responsive layout
+    ✔ move assets to network @done(25-07-23 21:41)
+    ✘ add theme notifier @cancelled(25-07-23 21:41)
+    ✔ responsive layout @done(25-07-23 21:41)
     ☐ credit website/logo inspiration artists
+    ☐ try github pages with peanut package
+    ☐ try github pages with peanut package with eventsjo
+    ☐ do github read mes for the rest of the projects
+    ☐ add 'status' to projects

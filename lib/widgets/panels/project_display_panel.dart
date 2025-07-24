@@ -6,6 +6,7 @@ import 'package:portfolio_3/models/project.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
+import 'package:portfolio_3/utils/platform_utils.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/project_video_player.dart';
 import 'package:portfolio_3/widgets/ripple_button.dart';
@@ -37,7 +38,10 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
       child: SmoothList(
         controller: _scrollController,
         child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
+          physics:
+              PlatformUtils.isWebMobile
+                  ? const NeverScrollableScrollPhysics()
+                  : const BouncingScrollPhysics(),
           controller: _scrollController,
           children: [
             FadeInLeft(
