@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/models/project.dart';
 import 'package:portfolio_3/utils/constants.dart';
+import 'package:portfolio_3/utils/custom_icons.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
 import 'package:portfolio_3/utils/platform_utils.dart';
@@ -40,8 +43,8 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
         child: ListView(
           physics:
               PlatformUtils.isWebMobile
-                  ? const NeverScrollableScrollPhysics()
-                  : const BouncingScrollPhysics(),
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
           controller: _scrollController,
           children: [
             FadeInLeft(
@@ -108,7 +111,7 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                                 () => launchUrl(
                                   Uri.parse(widget.project.github!),
                                 ),
-                            child: const Icon(Icons.code_rounded),
+                            child: const Icon(CustomIcons.github),
                           ),
                         if (widget.project.video != null)
                           RippleButton(
@@ -143,11 +146,20 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
 
             20.height,
 
-            H3(widget.project.segments?.first.title ?? ''),
+            FadeInLeft(
+              duration: const Duration(milliseconds: k500mill),
+              child: H3(widget.project.segments?.first.title ?? ''),
+            ),
 
             10.height,
 
-            BodyMediumText(widget.project.segments?.first.description ?? ''),
+            FadeInUp(
+              duration: const Duration(milliseconds: k500mill),
+              child: BodyMediumText(
+                widget.project.segments?.first.description ?? '',
+                selectable: true,
+              ),
+            ),
 
             20.height,
 
@@ -175,35 +187,7 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             //show image in full screen
-                            onTap:
-                                () => context.dialog(
-                                  barrierDismissible: true,
-                                  pageBuilder:
-                                      (context, _, __) => Padding(
-                                        padding: const EdgeInsets.all(
-                                          kPanelPaddingMedium,
-                                        ),
-                                        child: Center(
-                                          child: InteractiveViewer(
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  widget
-                                                      .project
-                                                      .screenshots![index],
-                                              placeholder:
-                                                  (
-                                                    context,
-                                                    url,
-                                                  ) => const Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                ),
+                            onTap: () => openImagesFullscreen(index),
                             child: CachedNetworkImage(
                               imageUrl: widget.project.screenshots![index],
                               placeholder:
@@ -235,6 +219,92 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
           ],
         ),
       ),
+    );
+  }
+
+  void openImagesFullscreen(int initialIndex) {
+    int currentIndex = initialIndex;
+    final screenshots = widget.project.screenshots!;
+    context.dialog(
+      barrierDismissible: true,
+      pageBuilder:
+          (context, _, __) => StatefulBuilder(
+            builder: (context, setState) {
+              return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: AlertDialog(
+                  backgroundColor: Colors.transparent,
+
+                  //close button
+                  title: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerRight,
+                    child: RippleButton(
+                      width: 40,
+                      height: 40,
+                      backgroundColor: context.theme.dividerColor,
+                      child: const Icon(Icons.close_rounded),
+                      onPressed: () => context.pop(),
+                    ),
+                  ),
+                  content: FittedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.all(kPanelPaddingMedium),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        spacing: 20,
+                        children: [
+                          RippleButton(
+                            backgroundColor: context.theme.dividerColor,
+                            child: const Icon(
+                              Icons.arrow_left_rounded,
+                              size: 120,
+                            ),
+                            onPressed:
+                                () => setState(
+                                  () =>
+                                      currentIndex =
+                                          (currentIndex - 1) %
+                                          screenshots.length,
+                                ),
+                          ),
+
+                          //left Arrow
+                          InteractiveViewer(
+                            child: CachedNetworkImage(
+                              imageUrl: screenshots[currentIndex],
+                              placeholder:
+                                  (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+
+                          //right Arrow
+                          RippleButton(
+                            backgroundColor: context.theme.dividerColor,
+                            child: const Icon(
+                              Icons.arrow_right_rounded,
+                              size: 120,
+                            ),
+                            onPressed:
+                                () => setState(
+                                  () =>
+                                      currentIndex =
+                                          (currentIndex + 1) %
+                                          screenshots.length,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
     );
   }
 }

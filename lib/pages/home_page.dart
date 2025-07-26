@@ -25,15 +25,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late PanelsManager panelsManager;
   int projectIndex = 0;
   int mobileTabIndex = 0;
-  final double mobileBreakpoint = 600;
   bool _isInitialized = false;
-  final bool useTabMobileLayout = true;
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         panelsManager = PanelsManager(context);
         panelsManager.init();
@@ -55,7 +53,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
-  bool get isMobileView => context.width() < mobileBreakpoint;
+  bool get isMobileView => context.width() < kMobileBreakpoint;
 
   @override
   Widget build(BuildContext context) {
@@ -72,35 +70,32 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
 
     return NoiseWrapper(
-      child: Scaffold(
-        appBar: AppAppBar(
-          isMobile: isMobileView,
-          panelsEnabled: panelsManager.panelsEnabled,
-          onPanelToggle: (index) {
-            if (mounted) {
-              setState(() => panelsManager.togglePanel(context, index));
-            }
-          },
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(
-            left: kPanelPaddingMedium,
-            right: kPanelPaddingMedium,
-            bottom: kPanelPaddingMedium,
-            top: kPanelPaddingSmall,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppAppBar(
+            isMobile: isMobileView,
+            panelsEnabled: panelsManager.panelsEnabled,
+            onPanelToggle: (index) {
+              if (mounted) {
+                setState(() => panelsManager.togglePanel(context, index));
+              }
+            },
           ),
-          child:
-              isMobileView
-                  ? (useTabMobileLayout
-                      ? _buildMobileTabLayout()
-                      : _buildMobileLayout())
-                  : _buildDesktopLayout(),
+          body: Padding(
+            padding: const EdgeInsets.only(
+              left: kPanelPaddingMedium,
+              right: kPanelPaddingMedium,
+              bottom: kPanelPaddingMedium,
+              top: kPanelPaddingSmall,
+            ),
+            child: isMobileView ? _buildMobileLayout() : _buildDesktopLayout(),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildMobileTabLayout() {
+  Widget _buildMobileLayout() {
     final List<Widget> panels = [
       HomePanel(
         panel: panelsManager.panel0.copyWith(
@@ -246,113 +241,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         ),
       ),
-    );
-  }
-
-  //old mobile layout it works but
-  Widget _buildMobileLayout() {
-    return ListView(
-      key: const ValueKey('mobile_layout'),
-      children: [
-        //about panel
-        HomePanel(
-          panel: panelsManager.panel0.copyWith(
-            width: double.infinity,
-            height: 300,
-            maxWidth: double.infinity,
-            minWidth: 0,
-            maxHeight: 300,
-            minHeight: 300,
-            axis: Axis.vertical,
-          ),
-          child: const AboutPanel(),
-        ),
-
-        //logo panel
-        HomePanel(
-          panel: panelsManager.panel1.copyWith(
-            width: double.infinity,
-            height: 200,
-            maxWidth: double.infinity,
-            minWidth: 0,
-            maxHeight: 200,
-            minHeight: 200,
-            axis: Axis.vertical,
-            isExpanded: false,
-          ),
-          child: const LogoPanel(),
-        ),
-
-        //projects panel
-        HomePanel(
-          panel: panelsManager.panel2.copyWith(
-            width: double.infinity,
-            maxWidth: double.infinity,
-            minWidth: 0,
-          ),
-          child: ProjectsPanel(
-            itemCount: ProjectsManager.projects.length,
-            itemBuilder:
-                (context, index) => ProjectButton(
-                  project: ProjectsManager.projects[index],
-                  onEnter: () {
-                    if (mounted) {
-                      setState(
-                        () => ProjectsManager.projects[index].isHovered = true,
-                      );
-                    }
-                  },
-                  onExit: () {
-                    if (mounted) {
-                      setState(
-                        () => ProjectsManager.projects[index].isHovered = false,
-                      );
-                    }
-                  },
-                  onPressed: () {
-                    if (mounted) {
-                      setState(() => projectIndex = index);
-                    }
-                  },
-                ),
-          ),
-        ),
-
-        //project display panel
-        HomePanel(
-          panel: panelsManager.panel3.copyWith(
-            width: double.infinity,
-            height: 400,
-            maxWidth: double.infinity,
-            minWidth: 0,
-            maxHeight: 400,
-            minHeight: 400,
-          ),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: k500mill),
-            transitionBuilder:
-                (child, animation) =>
-                    FadeTransition(opacity: animation, child: child),
-            child: ProjectDisplayPanel(
-              key: ValueKey(ProjectsManager.projects[projectIndex].name),
-              project: ProjectsManager.projects[projectIndex],
-            ),
-          ),
-        ),
-
-        //experience panel
-        HomePanel(
-          panel: panelsManager.panel4.copyWith(
-            width: double.infinity,
-            height: 300,
-            maxWidth: double.infinity,
-            minWidth: 0,
-            maxHeight: 300,
-            minHeight: 300,
-          ),
-          child: const ExperiencePanel(),
-        ),
-      ],
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 
 class AppText extends StatelessWidget {
@@ -10,6 +11,7 @@ class AppText extends StatelessWidget {
   final Color? color;
   final FontWeight? fontWeight;
   final double? fontSize;
+  final bool? selectable;
 
   const AppText(
     this.text, {
@@ -21,25 +23,38 @@ class AppText extends StatelessWidget {
     this.color,
     this.fontWeight,
     this.fontSize,
+    this.selectable,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: style?.copyWith(
-        color: color,
-        fontWeight: fontWeight,
-        fontSize: fontSize,
-      ),
-      textAlign: textAlign,
-      maxLines: maxLines,
-      overflow: overflow,
-    );
+    return selectable ?? false
+        ? SelectableText(
+          text,
+          style: style?.copyWith(
+            color: color,
+            fontWeight: fontWeight,
+            fontSize: fontSize,
+            fontFamily: kFontFamily,
+          ),
+          textAlign: textAlign,
+          maxLines: maxLines,
+        )
+        : Text(
+          text,
+          style: style?.copyWith(
+            color: color,
+            fontWeight: fontWeight,
+            fontSize: fontSize,
+            fontFamily: kFontFamily,
+          ),
+          textAlign: textAlign,
+          maxLines: maxLines,
+          overflow: overflow,
+        );
   }
 }
 
-// Specialized text widgets
 class H1 extends AppText {
   const H1(
     super.text, {
@@ -149,6 +164,7 @@ class BodyMediumText extends AppText {
     super.textAlign,
     super.maxLines,
     super.overflow,
+    super.selectable,
   });
 
   @override
@@ -162,6 +178,7 @@ class BodyMediumText extends AppText {
       textAlign: textAlign,
       maxLines: maxLines,
       overflow: overflow,
+      selectable: selectable,
     );
   }
 }

@@ -34,6 +34,7 @@ migrate_working_dir/
 /build/
 .env
 deploy.sh
+lib/utils/env_constants.dart
 
 # Symbolication related
 app.*.symbols

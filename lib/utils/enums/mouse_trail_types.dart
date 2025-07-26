@@ -1,1 +1,1 @@
-enum MouseTrailType { grid, distortion, ripple, none }
+enum MouseTrailType { grid, distortion, ripple, circle, none }

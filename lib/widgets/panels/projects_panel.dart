@@ -40,21 +40,25 @@ class _ProjectsPanelState extends State<ProjectsPanel> {
       //grid view if mobile else list view
       child:
           widget.isMobile
-              ? SmoothList(
-                controller: _scrollController,
-                child: GridView.builder(
+              ? FadeInUp(
+                duration: const Duration(milliseconds: k500mill),
+                child: SmoothList(
                   controller: _scrollController,
-                  physics:
-                      PlatformUtils.isWebMobile
-                          ? const NeverScrollableScrollPhysics()
-                          : const BouncingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: kPanelPaddingMedium,
-                    childAspectRatio: 1.5,
+                  child: GridView.builder(
+                    controller: _scrollController,
+                    physics:
+                        PlatformUtils.isWebMobile
+                            ? const BouncingScrollPhysics()
+                            : const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: kPanelPaddingMedium,
+                          childAspectRatio: 1.5,
+                        ),
+                    itemBuilder: widget.itemBuilder,
+                    itemCount: widget.itemCount,
                   ),
-                  itemBuilder: widget.itemBuilder,
-                  itemCount: widget.itemCount,
                 ),
               )
               : ListView(

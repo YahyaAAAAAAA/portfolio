@@ -42,8 +42,8 @@ class _AboutPanelState extends State<AboutPanel> with TickerProviderStateMixin {
         child: ListView(
           physics:
               PlatformUtils.isWebMobile
-                  ? const NeverScrollableScrollPhysics()
-                  : const BouncingScrollPhysics(),
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
           controller: _scrollController,
           children: [
             FadeInLeft(

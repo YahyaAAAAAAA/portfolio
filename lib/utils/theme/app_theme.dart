@@ -46,7 +46,7 @@ ThemeData getAppTheme() {
       ),
     ),
     dialogTheme: DialogTheme(
-      backgroundColor: GColors.black,
+      backgroundColor: GColors.darkPurple,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(kOuterBorderRadius),
       ),

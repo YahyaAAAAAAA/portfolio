@@ -12,6 +12,8 @@ const double kIconSizeLarge = 25;
 
 const double kAppBarHeight = 58;
 
+const double kMobileBreakpoint = 700;
+
 const int k500mill = 500;
 const int k2000mill = 2000;
 
@@ -54,7 +56,7 @@ const String kEventsJoLogo =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814495/events_jo_logo_lkci2i.png';
 const String kEventsJoBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814919/events_jo_banner_abxdan.png';
-const String kEventsJoGithub = 'https://github.com/YahyaAAAAAAA/EventsJo';
+const String kEventsJoGithub = 'https://github.com/YahyaAAAAAAA/events-jo';
 const String kEventsJoWebsite = 'https://yahyaaaaaaaa.github.io/events-jo/';
 const String kEventsJoVideo =
     'https://res.cloudinary.com/ddixv6xdj/video/upload/v1752747571/EventsJo_Video_w1gxls.mp4';
@@ -62,6 +64,23 @@ const List<String> kEventsJoScreenshots = [
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813821/home_lqinke.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813819/details_q0egyi.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813812/rating_vobhmb.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813804/details2_uq1luj.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813804/search_azd7qh.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813778/checkout_xwnbvl.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813716/create3_cilk8w.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813713/create_e4tkmz.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813707/book_a8ruct.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813700/accountowner_chipz3.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813686/about_pkln07.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813682/accountuser_n32zrz.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813645/privacy_ry1au0.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813641/ownervenues_jkun6z.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813637/password_rjcn5r.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813724/admin_loyvdr.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813733/admin7_m4rdsr.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813720/admin3_m7ytu3.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813708/admin9_xsqccb.png',
+  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813699/admin4_kspgg5.png',
 ];
 const List<ProjectSegment> kEventsJoSegments = [
   ProjectSegment(
@@ -87,7 +106,7 @@ const String kConcentratedLogo =
 const String kConcentratedBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814879/concentrated_banner_ibtx97.png';
 const String kConcentratedGithub =
-    'https://github.com/YahyaAAAAAAA/Concentrated';
+    'https://github.com/YahyaAAAAAAA/concentrated';
 const List<String> kConcentratedScreenshots = [
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813480/1_l7eujo.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813470/2_qwidbp.png',
@@ -100,7 +119,7 @@ const List<ProjectSegment> kConcentratedSegments = [
   ProjectSegment(
     title: 'Introduction',
     description:
-        'Concentrated is a cross-platform mobile application for taking and creating exams and quizzes.\n The project focuses on showcasing clean-architecture, MVVM, and SOLID principles in Flutter.',
+        'Concentrated is a cross-platform mobile application for taking and creating exams and quizzes.\nThe project focuses on showcasing clean-architecture, MVVM, and SOLID principles in Flutter.',
   ),
   ProjectSegment(
     title: 'Features',
@@ -119,7 +138,7 @@ const String kSquareoLogo =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814662/squareo_logo_em27r2.png';
 const String kSquareoBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752815231/squareo_banner_gsezrz.png';
-const String kSquareoGithub = 'https://github.com/YahyaAAAAAAA/Squareo';
+const String kSquareoGithub = 'https://github.com/YahyaAAAAAAA/squareo';
 const String kSquareoWebsite = 'https://squareoweb.github.io/';
 const String kSquareoVideo =
     'https://res.cloudinary.com/ddixv6xdj/video/upload/v1752814000/Suqareo_Video_sm3zx1.mp4';
@@ -160,7 +179,7 @@ const String kAudioResumerLogo =
 const String kAudioResumerBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814836/audio_resumer_banner_xiwicf.png';
 const String kAudioResumerGithub =
-    'https://github.com/YahyaAAAAAAA/AudioResumerExtension';
+    'https://github.com/YahyaAAAAAAA/audio-resumer';
 const List<String> kAudioResumerScreenshots = [
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813420/1_ynjgnr.png',
 ];
@@ -182,7 +201,7 @@ const String kDrawOverItLogo =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814277/draw_over_it_logo_mleung.png';
 const String kDrawOverItBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814901/draw_over_it_banner_ukwldc.png';
-const String kDrawOverItGithub = 'https://github.com/YahyaAAAAAAA/DrawOverIt';
+const String kDrawOverItGithub = 'https://github.com/YahyaAAAAAAA/draw-over-it';
 const String kDrawOverItVideo =
     'https://res.cloudinary.com/ddixv6xdj/video/upload/v1752814028/DrawOverIt_Video_ue8esx.mp4';
 const List<ProjectSegment> kDrawOverItSegments = [
@@ -203,7 +222,7 @@ const String kWindowsSidebarLogo =
 const String kWindowsSidebarBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814818/windows_sidebar_banner_goup4d.png';
 const String kWindowsSidebarGithub =
-    'https://github.com/YahyaAAAAAAA/WindowsWidgets';
+    'https://github.com/YahyaAAAAAAA/windows-sidebar';
 const List<ProjectSegment> kWindowsSidebarSegments = [
   ProjectSegment(
     title: 'Introduction',
@@ -220,7 +239,8 @@ const String kRapidRoundsLogo =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814600/rapid_rounds_logo_l6j9yz.png';
 const String kRapidRoundsBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752815185/rapid_rounds_banner_ysonl9.png';
-const String kRapidRoundsGithub = 'https://github.com/YahyaAAAAAAA/RapidRounds';
+const String kRapidRoundsGithub =
+    'https://github.com/YahyaAAAAAAA/rapid-rounds';
 const List<String> kRapidRoundsScreenshots = [
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813902/1_c7hwhk.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813894/2_f6utfd.png',
@@ -248,7 +268,7 @@ const String kPortfolioLogo =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752816183/portfolio_logo_fg96oi.png';
 const String kPortfolioBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752816192/portfolio_banner_xowrtu.png';
-const String kPortfolioGithub = 'https://github.com/YahyaAAAAAAA/Portfolio';
+const String kPortfolioGithub = 'https://github.com/YahyaAAAAAAA/portfolio';
 const List<ProjectSegment> kPortfolioSegments = [
   ProjectSegment(
     title: 'Introduction',
@@ -265,7 +285,7 @@ const String kEventsJoBackendLogo =
 const String kEventsJoBackendBanner =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752814970/events_jo_backend_banner_jfe6kf.jpg';
 const String kEventsJoBackendGithub =
-    'https://github.com/YahyaAAAAAAA/EventsJoStripeBackend';
+    'https://github.com/YahyaAAAAAAA/events-jo-stripe-backend';
 const List<ProjectSegment> kEventsJoBackendSegments = [
   ProjectSegment(
     title: 'Introduction',

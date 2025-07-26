@@ -52,7 +52,7 @@ class ProjectsManager {
       isHovered: false,
     ),
     Project(
-      name: 'DrawOverIt',
+      name: 'Draw Over It',
       logo: kDrawOverItLogo,
       banner: kDrawOverItBanner,
       platform: 'Desktop',
@@ -63,7 +63,7 @@ class ProjectsManager {
       isHovered: false,
     ),
     Project(
-      name: 'WindowsSidebar',
+      name: 'Windows Sidebar',
       logo: kWindowsSidebarLogo,
       banner: kWindowsSidebarBanner,
       platform: 'Windows',
@@ -73,7 +73,7 @@ class ProjectsManager {
       isHovered: false,
     ),
     Project(
-      name: 'RapidRounds',
+      name: 'Rapid Rounds',
       logo: kRapidRoundsLogo,
       banner: kRapidRoundsBanner,
       platform: 'Mobile',
@@ -94,7 +94,7 @@ class ProjectsManager {
       isHovered: false,
     ),
     Project(
-      name: 'EventsJoBackend',
+      name: 'EventsJo Backend',
       logo: kEventsJoBackendLogo,
       banner: kEventsJoBackendBanner,
       platform: 'Cross-Platform',

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:portfolio_3/utils/platform_utils.dart';
+import 'dart:async';
 
 /// Extra scroll offset to be added while the scroll is happened
-/// Default value is 10
-const double defaultScrollOffset = 2;
+/// Default value is 2.5
+const double defaultScrollOffset = 2.5;
 
 /// Duration/length for how long the animation should go
 /// after the scroll has happened
-/// Default value is 600ms
+/// Default value is 1500ms
 const int defaultAnimationDuration = 1500;
 
 class SmoothList extends StatefulWidget {
@@ -33,6 +33,10 @@ class SmoothList extends StatefulWidget {
   /// Curve of the animation.
   final Curve curve;
 
+  /// Trackpad scroll sensitivity multiplier
+  /// Default value is 0.8 (reduces trackpad sensitivity)
+  final double trackpadSensitivity;
+
   const SmoothList({
     super.key,
     required this.controller,
@@ -40,6 +44,7 @@ class SmoothList extends StatefulWidget {
     this.scrollSpeed = defaultScrollOffset,
     this.scrollAnimationLength = defaultAnimationDuration,
     this.curve = Curves.easeOutCubic,
+    this.trackpadSensitivity = 0.8,
   });
 
   @override
@@ -47,47 +52,51 @@ class SmoothList extends StatefulWidget {
 }
 
 class _SmoothListState extends State<SmoothList> with TickerProviderStateMixin {
-  // data variables
+  // Data variables
   double _scroll = 0;
   bool _isAnimating = false;
   double _targetScroll = 0;
   DateTime _lastScrollTime = DateTime.now();
 
+  // Trackpad specific variables
+  Timer? _trackpadDebounceTimer;
+  double _accumulatedTrackpadDelta = 0;
+  DateTime _lastTrackpadEvent = DateTime.now();
+  bool _isTrackpadScrolling = false;
+  static const int _trackpadDebounceMs = 16; // ~60fps
+  static const int _trackpadEndDelayMs = 100;
+
   @override
   void initState() {
     super.initState();
-
-    // Adding listener so if value of listener is changed outside our class
-    // it gets updated here to avoid unwanted scrolling behavior
     widget.controller.addListener(scrollListener);
     _targetScroll = widget.controller.initialScrollOffset;
   }
 
   @override
   void didUpdateWidget(covariant SmoothList oldWidget) {
-    // In case if window is resized the widget gets initialized again without listener
-    // adding it back again to resolve unwanted issues
     if (!widget.controller.hasClients) {
       widget.controller.addListener(scrollListener);
     }
-
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _trackpadDebounceTimer?.cancel();
+    widget.controller.removeListener(scrollListener);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
       behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-      child:
-          PlatformUtils.isWebMobile
-              ? widget.child
-              : Listener(onPointerSignal: onPointerSignal, child: widget.child),
+      child: Listener(onPointerSignal: onPointerSignal, child: widget.child),
     );
   }
 
-  /// Member Functions
-  ///
-  ///
+  /// Smooth scroll function for mouse wheel
   void _smoothScrollTo(double delta) {
     final now = DateTime.now();
     final timeDiff = now.difference(_lastScrollTime).inMilliseconds;
@@ -97,18 +106,15 @@ class _SmoothListState extends State<SmoothList> with TickerProviderStateMixin {
     _targetScroll += (delta * widget.scrollSpeed);
 
     // Bound the scroll value
-    if (_targetScroll > widget.controller.position.maxScrollExtent) {
-      _targetScroll = widget.controller.position.maxScrollExtent;
-    }
-    if (_targetScroll < 0) {
-      _targetScroll = 0;
-    }
+    _targetScroll = _targetScroll.clamp(
+      0.0,
+      widget.controller.position.maxScrollExtent,
+    );
 
     // Calculate animation duration based on time between scrolls
     int animationDuration =
         timeDiff < 50
-            ? widget.scrollAnimationLength ~/
-                4 // Faster for rapid scrolling
+            ? widget.scrollAnimationLength ~/ 4
             : widget.scrollAnimationLength;
 
     // If at bounds, use shorter animation
@@ -117,7 +123,7 @@ class _SmoothListState extends State<SmoothList> with TickerProviderStateMixin {
       animationDuration = widget.scrollAnimationLength ~/ 4;
     }
 
-    // Always start a new animation to the target
+    // Start animation to target
     widget.controller
         .animateTo(
           _targetScroll,
@@ -131,32 +137,75 @@ class _SmoothListState extends State<SmoothList> with TickerProviderStateMixin {
     setState(() => _isAnimating = true);
   }
 
+  /// Handle trackpad scrolling with debouncing and accumulation
+  void _handleTrackpadScroll(double delta) {
+    final now = DateTime.now();
+    _lastTrackpadEvent = now;
+    _isTrackpadScrolling = true;
+
+    // Accumulate delta for smoother scrolling
+    _accumulatedTrackpadDelta += delta * widget.trackpadSensitivity;
+
+    // Cancel existing timer
+    _trackpadDebounceTimer?.cancel();
+
+    // Set up debounced scroll execution
+    _trackpadDebounceTimer = Timer(
+      const Duration(milliseconds: _trackpadDebounceMs),
+      () {
+        if (!mounted) return;
+
+        // Apply accumulated scroll
+        final currentOffset = widget.controller.offset;
+        final newOffset = (currentOffset + _accumulatedTrackpadDelta).clamp(
+          0.0,
+          widget.controller.position.maxScrollExtent,
+        );
+
+        // Use a very short animation for smoother trackpad feel
+        widget.controller.animateTo(
+          newOffset,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOutQuart,
+        );
+
+        // Update target scroll
+        _targetScroll = newOffset;
+
+        // Reset accumulated delta
+        _accumulatedTrackpadDelta = 0;
+
+        // Set timer to detect end of trackpad scrolling
+        Timer(const Duration(milliseconds: _trackpadEndDelayMs), () {
+          if (mounted &&
+              DateTime.now().difference(_lastTrackpadEvent).inMilliseconds >
+                  _trackpadEndDelayMs) {
+            _isTrackpadScrolling = false;
+          }
+        });
+      },
+    );
+  }
+
   void scrollListener() {
     _scroll = widget.controller.offset;
-    // Update target scroll when user manually scrolls
-    if (!_isAnimating) {
+    // Update target scroll when user manually scrolls (but not during trackpad)
+    if (!_isAnimating && !_isTrackpadScrolling) {
       _targetScroll = _scroll;
     }
   }
 
   void onPointerSignal(PointerSignalEvent pointerSignal) {
     if (pointerSignal is PointerScrollEvent) {
-      if (pointerSignal.kind != PointerDeviceKind.trackpad) {
-        // Apply smooth scrolling for mouse wheel
-        _smoothScrollTo(pointerSignal.scrollDelta.dy);
+      // Prevent default scroll behavior
+
+      if (pointerSignal.kind == PointerDeviceKind.trackpad) {
+        // Handle trackpad with debouncing and accumulation
+        _handleTrackpadScroll(pointerSignal.scrollDelta.dy);
       } else {
-        // For trackpad, calculate new offset with bounds checking
-        final newOffset = (widget.controller.offset +
-                pointerSignal.scrollDelta.dy)
-            .clamp(0.0, widget.controller.position.maxScrollExtent);
-        // Directly update scroll position without smoothing
-        widget.controller.jumpTo(newOffset);
+        // Handle mouse wheel with smooth scrolling
+        _smoothScrollTo(pointerSignal.scrollDelta.dy);
       }
     }
-  }
-
-  void onPointerMove(PointerMoveEvent pointerMove) {
-    // Apply smooth scrolling for mouse drag
-    _smoothScrollTo(-pointerMove.delta.dy);
   }
 }

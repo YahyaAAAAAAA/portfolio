@@ -50,7 +50,6 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
     'Stripe',
     'Git',
   ];
-
   final List<String> _languages = ['Arabic (Native)', 'English (Fluent)'];
 
   @override
@@ -69,8 +68,8 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
         child: ListView(
           physics:
               PlatformUtils.isWebMobile
-                  ? const NeverScrollableScrollPhysics()
-                  : const BouncingScrollPhysics(),
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
           controller: _scrollController,
           children: [
             FadeInLeft(
@@ -261,6 +260,7 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
                       .entries
                       .map(
                         (entry) => RippleButton(
+                          cursor: MouseCursor.defer,
                           width: kSkillButtonWidth,
                           height: kSkillButtonHeight,
                           backgroundColor:
@@ -293,6 +293,7 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
                       .entries
                       .map(
                         (entry) => RippleButton(
+                          cursor: MouseCursor.defer,
                           width: kSkillButtonWidth,
                           height: kSkillButtonHeight,
                           backgroundColor:

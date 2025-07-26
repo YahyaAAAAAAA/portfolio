@@ -143,7 +143,14 @@ extension ContextExtensions on BuildContext {
   /// Show SnackBar
   void showSnackBar(Widget snackBarWidget) => ScaffoldMessenger.of(
     this,
-  ).showSnackBar(SnackBar(content: snackBarWidget));
+  ).showSnackBar(
+    SnackBar(
+      content: snackBarWidget,
+      backgroundColor: theme.canvasColor,
+      duration: const Duration(seconds: 2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    ),
+  );
 
   /// Hide SnackBar
   void hideSnackBar() => ScaffoldMessenger.of(this).hideCurrentSnackBar();
