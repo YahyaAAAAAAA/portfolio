@@ -16,12 +16,12 @@ class CustomIcons {
     fontFamily: _kFontFam,
     fontPackage: _kFontPkg,
   );
-  static const IconData screen_play = IconData(
+  static const IconData screenPlay = IconData(
     0xe87a,
     fontFamily: _kFontFam,
     fontPackage: _kFontPkg,
   );
-  static const IconData site_alt = IconData(
+  static const IconData siteAlt = IconData(
     0xe87b,
     fontFamily: _kFontFam,
     fontPackage: _kFontPkg,

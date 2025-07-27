@@ -1,13 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_divider.dart';
+import 'package:portfolio_3/widgets/app/app_image.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/mouse_trails/ripple_mouse_trail.dart';
 
 class ExperienceButton extends StatelessWidget {
   final String image;
+  final String imageHash;
   final String subTitle;
   final String title;
   final double alpha;
@@ -20,6 +21,7 @@ class ExperienceButton extends StatelessWidget {
   const ExperienceButton({
     super.key,
     required this.image,
+    required this.imageHash,
     required this.subTitle,
     required this.title,
     required this.alpha,
@@ -60,15 +62,9 @@ class ExperienceButton extends StatelessWidget {
                         context.theme.dividerColor.withValues(alpha: alpha),
                         BlendMode.color,
                       ),
-                      child: CachedNetworkImage(
+                      child: AppImage.hash(
                         imageUrl: image,
-                        placeholder:
-                            (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                        errorWidget:
-                            (context, url, error) =>
-                                const Center(child: Icon(Icons.error)),
+                        imageHash: imageHash,
                         fit: BoxFit.cover,
                         height: height! / 1.4,
                       ),

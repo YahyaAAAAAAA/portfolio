@@ -11,6 +11,7 @@ import 'package:portfolio_3/widgets/app/app_divider.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/mobile_navbar_button.dart';
 import 'package:portfolio_3/widgets/ripple_button.dart';
+import 'package:portfolio_3/widgets/theme_switcher.dart';
 import 'package:portfolio_3/widgets/wrappers/noise_wrapper.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -79,6 +80,8 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                     : null,
             actionsPadding: const EdgeInsets.only(right: 20),
             actions: [
+              const ThemeSwitcher(),
+              const SizedBox(width: 10),
               RippleButton(
                 onPressed: () {
                   //contact me/socials dialog
@@ -226,7 +229,6 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder:
           (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-
             child: NoiseWrapper(
               child: AlertDialog(
                 title: const H3('Resume'),

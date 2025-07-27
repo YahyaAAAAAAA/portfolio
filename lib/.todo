@@ -10,6 +10,11 @@ main:
     ✔ responsive layout @done(25-07-23 21:41)
     ✔ try github pages with peanut package @done(25-07-25 16:57)
     ✔ try list swipe on android first then web @done(25-07-26 10:39)
-    ☐ credit website/logo inspiration artists
+    ✔ credit website/logo inspiration artists @done(25-07-27 15:16)
+    ✔ try with theme notifier again @done(25-07-27 22:06)
+    ✘ try ListView.builder instead of carousel @cancelled(25-07-27 22:06)
+    ✔ reduce EventsJo images to 10 @done(25-07-27 22:06)
+    ✔ remove selectable text in project display panel @done(25-07-28 00:37)
+    ✔ turn web package again before commiting @done(25-07-28 00:37)
     ☐ do github read mes for the rest of the projects
     ☐ add 'status' to projects

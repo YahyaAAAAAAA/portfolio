@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/models/project.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
+import 'package:portfolio_3/widgets/app/app_image.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/ripple_button.dart';
 
@@ -51,17 +51,8 @@ class ProjectButton extends StatelessWidget {
                     ),
                     BlendMode.color,
                   ),
-                  child: CachedNetworkImage(
+                  child: AppImage(
                     imageUrl: project.logo!,
-                    placeholder:
-                        (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                    errorWidget:
-                        (context, url, error) => Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: context.theme.canvasColor,
-                          ),
-                        ),
                     width: 60,
                     height: 60,
                   ),

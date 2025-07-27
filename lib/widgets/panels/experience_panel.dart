@@ -102,6 +102,7 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
                   children: [
                     ExperienceButton(
                       image: kUniImage,
+                      imageHash: kUniImageHash,
                       subTitle: '2021-2025',
                       title: 'Hashemite University',
                       alpha: _isUniCardHovered ? 0 : 0.3,
@@ -166,6 +167,7 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
                                 [
                                   ExperienceButton(
                                     image: kHopeInternational,
+                                    imageHash: kHopeInternationalHash,
                                     subTitle: '2025',
                                     title: 'The Hope International',
                                     width: kExperienceButtonWidth - 50,
@@ -194,6 +196,7 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
 
                                   ExperienceButton(
                                     image: kCoachYou,
+                                    imageHash: kCoachYouHsh,
                                     subTitle: '2025',
                                     title: 'CoachYou',
                                     alpha: _isCoachYouCardHovered ? 0 : 0.5,
@@ -214,6 +217,7 @@ class _ExperiencePanelState extends State<ExperiencePanel> {
 
                                   ExperienceButton(
                                     image: kJYIF,
+                                    imageHash: kJYIFHash,
                                     subTitle: '2025',
                                     title: 'JYIF',
                                     width: kExperienceButtonWidth - 50,

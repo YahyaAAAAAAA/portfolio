@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/models/project.dart';
@@ -10,6 +8,7 @@ import 'package:portfolio_3/utils/custom_icons.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
 import 'package:portfolio_3/utils/platform_utils.dart';
+import 'package:portfolio_3/widgets/app/app_image.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/project_video_player.dart';
 import 'package:portfolio_3/widgets/ripple_button.dart';
@@ -78,18 +77,8 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                       spacing: 15,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CachedNetworkImage(
+                        AppImage(
                           imageUrl: widget.project.logo!,
-                          placeholder:
-                              (context, url) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          errorWidget:
-                              (context, url, error) => Center(
-                                child: CircularProgressIndicator(
-                                  backgroundColor: context.theme.canvasColor,
-                                ),
-                              ),
                           width: 50,
                           height: 50,
                         ),
@@ -157,7 +146,6 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
               duration: const Duration(milliseconds: k500mill),
               child: BodyMediumText(
                 widget.project.segments?.first.description ?? '',
-                selectable: true,
               ),
             ),
 
@@ -188,13 +176,20 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                           child: GestureDetector(
                             //show image in full screen
                             onTap: () => openImagesFullscreen(index),
-                            child: CachedNetworkImage(
-                              imageUrl: widget.project.screenshots![index],
-                              placeholder:
-                                  (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                              fit: BoxFit.contain,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: context.theme.dividerColor,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  kOuterBorderRadius,
+                                ),
+                              ),
+                              child: AppImage(
+                                imageUrl: widget.project.screenshots![index],
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
@@ -222,6 +217,14 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
     );
   }
 
+  void goLeft(int currentIndex, List<String> screenshots) {
+    setState(() => currentIndex = (currentIndex - 1) % screenshots.length);
+  }
+
+  void goRight(int currentIndex, List<String> screenshots) {
+    setState(() => currentIndex = (currentIndex + 1) % screenshots.length);
+  }
+
   void openImagesFullscreen(int initialIndex) {
     int currentIndex = initialIndex;
     final screenshots = widget.project.screenshots!;
@@ -236,68 +239,49 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                   backgroundColor: Colors.transparent,
 
                   //close button
-                  title: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerRight,
-                    child: RippleButton(
-                      width: 40,
-                      height: 40,
-                      backgroundColor: context.theme.dividerColor,
-                      child: const Icon(Icons.close_rounded),
-                      onPressed: () => context.pop(),
-                    ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BodyMediumText(
+                        'Swipe to navigate ${currentIndex + 1} / ${screenshots.length}',
+                      ),
+                      RippleButton(
+                        width: 30,
+                        height: 30,
+                        backgroundColor: context.theme.dividerColor,
+                        child: const Icon(Icons.close_rounded),
+                        onPressed: () => context.pop(),
+                      ),
+                    ],
                   ),
-                  content: FittedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.all(kPanelPaddingMedium),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        spacing: 20,
-                        children: [
-                          RippleButton(
-                            backgroundColor: context.theme.dividerColor,
-                            child: const Icon(
-                              Icons.arrow_left_rounded,
-                              size: 120,
-                            ),
-                            onPressed:
-                                () => setState(
-                                  () =>
-                                      currentIndex =
-                                          (currentIndex - 1) %
-                                          screenshots.length,
-                                ),
-                          ),
-
-                          //left Arrow
-                          InteractiveViewer(
-                            child: CachedNetworkImage(
-                              imageUrl: screenshots[currentIndex],
-                              placeholder:
-                                  (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-
-                          //right Arrow
-                          RippleButton(
-                            backgroundColor: context.theme.dividerColor,
-                            child: const Icon(
-                              Icons.arrow_right_rounded,
-                              size: 120,
-                            ),
-                            onPressed:
-                                () => setState(
-                                  () =>
-                                      currentIndex =
-                                          (currentIndex + 1) %
-                                          screenshots.length,
-                                ),
-                          ),
-                        ],
+                  content: Padding(
+                    padding: const EdgeInsets.all(kPanelPaddingMedium),
+                    child: InteractiveViewer(
+                      child: GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          const double minSwipeVelocity = 300.0;
+                          if (details.velocity.pixelsPerSecond.dx.abs() <
+                              minSwipeVelocity) {
+                            return;
+                          }
+                          if (details.velocity.pixelsPerSecond.dx > 0) {
+                            setState(
+                              () =>
+                                  currentIndex =
+                                      (currentIndex - 1) % screenshots.length,
+                            );
+                          } else {
+                            setState(
+                              () =>
+                                  currentIndex =
+                                      (currentIndex + 1) % screenshots.length,
+                            );
+                          }
+                        },
+                        child: AppImage(
+                          imageUrl: screenshots[currentIndex],
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),

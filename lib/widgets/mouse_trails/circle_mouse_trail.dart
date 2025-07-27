@@ -81,8 +81,8 @@ class _CircleMouseTrailState extends State<CircleMouseTrail> {
                     decoration: BoxDecoration(
                       color:
                           widget.isFilled
-                              ? widget.circleColor.withOpacity(0.5)
-                              : widget.circleColor.withOpacity(0),
+                              ? widget.circleColor.withValues(alpha: 0.5)
+                              : widget.circleColor.withValues(alpha: 0),
                       shape: BoxShape.circle,
                       border: Border.all(color: widget.circleColor, width: 1),
                     ),

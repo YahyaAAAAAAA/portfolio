@@ -103,6 +103,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           height: context.height(),
           maxWidth: context.width(),
           axis: Axis.vertical,
+          color: context.theme.cardColor,
           enabled: true,
         ),
         child: const AboutPanel(),
@@ -113,6 +114,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           height: context.height(),
           axis: Axis.vertical,
           isExpanded: false,
+          color: context.theme.canvasColor,
           enabled: true,
         ),
         child: const LogoPanel(),
@@ -121,6 +123,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         panel: panelsManager.panel2.copyWith(
           width: context.width(),
           height: context.height(),
+          color: context.theme.cardColor,
           enabled: true,
         ),
         child: ProjectsPanel(
@@ -165,6 +168,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         panel: panelsManager.panel3.copyWith(
           width: context.width(),
           height: context.height(),
+          color: context.theme.cardColor,
           enabled: true,
         ),
         child: AnimatedSwitcher(
@@ -182,6 +186,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         panel: panelsManager.panel4.copyWith(
           width: context.width(),
           height: context.height(),
+          color: context.theme.cardColor,
           enabled: true,
         ),
         child: const ExperiencePanel(),
@@ -265,13 +270,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   children: [
                     //top-left
                     HomePanel(
-                      panel: panelsManager.panel0,
+                      panel: panelsManager.panel0.copyWith(
+                        color: context.theme.cardColor,
+                      ),
                       child: const AboutPanel(),
                     ),
 
                     //top-right
                     HomePanel(
-                      panel: panelsManager.panel1,
+                      panel: panelsManager.panel1.copyWith(
+                        color: context.theme.canvasColor,
+                      ),
                       child: const LogoPanel(),
                     ),
                   ],
@@ -280,7 +289,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
               //bottom
               HomePanel(
-                panel: panelsManager.panel2,
+                panel: panelsManager.panel2.copyWith(
+                  color: context.theme.cardColor,
+                ),
                 child: ProjectsPanel(
                   itemCount: ProjectsManager.projects.length,
                   itemBuilder:
@@ -335,7 +346,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     children: [
                       //top
                       HomePanel(
-                        panel: panelsManager.panel3,
+                        panel: panelsManager.panel3.copyWith(
+                          color: context.theme.cardColor,
+                        ),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: k500mill),
                           transitionBuilder:
@@ -353,7 +366,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                       //bottom
                       HomePanel(
-                        panel: panelsManager.panel4,
+                        panel: panelsManager.panel4.copyWith(
+                          color: context.theme.cardColor,
+                        ),
                         child: const ExperiencePanel(),
                       ),
                     ],

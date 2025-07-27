@@ -240,7 +240,7 @@ class RipplePainter extends CustomPainter {
     // Draw border
     final borderPaint =
         Paint()
-          ..color = baseColor.withValues(alpha: 0.3)
+          ..color = baseColor.withValues(alpha: 0)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1;
     canvas.drawRRect(rrect, borderPaint);

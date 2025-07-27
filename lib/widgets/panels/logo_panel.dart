@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
+import 'package:portfolio_3/widgets/app/app_image.dart';
 import 'package:portfolio_3/widgets/wrappers/grid_3d_wrapper.dart';
 
 class LogoPanel extends StatefulWidget {
@@ -45,26 +45,14 @@ class _LogoPanelState extends State<LogoPanel> with TickerProviderStateMixin {
               builder: (context, child) {
                 return Opacity(
                   opacity: _opacityAnimation.value,
-                  child: CachedNetworkImage(
+                  child: const AppImage(
                     imageUrl: kLogoFilledImage,
                     fit: BoxFit.cover,
-                    placeholder:
-                        (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                    errorWidget:
-                        (context, url, error) =>
-                            const Center(child: Icon(Icons.error)),
                   ),
                 );
               },
             ),
-            CachedNetworkImage(
-              imageUrl: kLogoImage,
-              fit: BoxFit.cover,
-              placeholder:
-                  (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-            ),
+            const AppImage(imageUrl: kLogoImage, fit: BoxFit.cover),
           ],
         ),
       ),

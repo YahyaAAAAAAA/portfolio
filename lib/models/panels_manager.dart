@@ -13,7 +13,7 @@ class PanelsManager {
     enabled: true,
     height: double.infinity,
     width: 455,
-    color: GColors.darkPurple,
+    color: GColors.darkCard,
     trail: MouseTrailType.grid,
     axis: Axis.horizontal,
   );
@@ -23,7 +23,7 @@ class PanelsManager {
     enabled: true,
     isExpanded: true,
     height: double.infinity,
-    color: GColors.purple,
+    color: GColors.darkCanvas,
     trail: MouseTrailType.ripple,
     axis: Axis.horizontal,
   );
@@ -33,7 +33,7 @@ class PanelsManager {
     enabled: true,
     height: 255,
     width: double.infinity,
-    color: GColors.darkPurple,
+    color: GColors.darkCard,
     trail: MouseTrailType.grid,
     axis: Axis.vertical,
   );
@@ -43,7 +43,7 @@ class PanelsManager {
     enabled: true,
     height: 255,
     width: double.infinity,
-    color: GColors.darkPurple,
+    color: GColors.darkCard,
     trail: MouseTrailType.grid,
     axis: Axis.vertical,
     alignment: Alignment.topCenter,
@@ -54,7 +54,7 @@ class PanelsManager {
     enabled: true,
     height: 255,
     width: double.infinity,
-    color: GColors.darkPurple,
+    color: GColors.darkCard,
     trail: MouseTrailType.grid,
     axis: Axis.vertical,
     alignment: Alignment.bottomCenter,
@@ -71,7 +71,6 @@ class PanelsManager {
   PanelsManager(this.context);
 
   void init() {
-    // Add safety checks for context
     if (!_isContextValid()) return;
 
     try {

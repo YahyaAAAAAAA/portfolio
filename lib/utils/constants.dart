@@ -23,15 +23,19 @@ const String kFontFamily = 'PPNeueMontreal';
 const String kUniUrl = 'https://www.hu.edu.jo/';
 const String kUniImage =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752816557/uni_edqulh.png';
+const String kUniImageHash = 'LFHLe-0=-:I[5_I_-oM}K8InaIaJ';
 const kHopeInternationalUrl = 'https://www.thehope-tech.com/';
 const String kHopeInternational =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1753198811/thehope_kzvf4b.png';
+const String kHopeInternationalHash = 'LMONB,of^-W.%Mj[axfQ^-WV9XoM';
 const kJYIFUrl = 'https://jyif.org/';
 const String kJYIF =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752816540/yjif_wjdjca.png';
+const String kJYIFHash = 'LMM~;0xapw%0}oVynPS0}=RQt6v|';
 const kCoachYouUrl = 'https://www.coachyou.io/#/';
 const String kCoachYou =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752816532/coachyou_cajw99.png';
+const String kCoachYouHsh = 'LEEolwcu}ZnI{Y5c+*Ex{eb.[Q6.';
 const String kLogoFilledImage =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752816548/logo_filled_shadow_qdiljk.png';
 const String kLogoImage =
@@ -40,8 +44,9 @@ const String kDecorationModel1 =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752816574/model11_ev0gcc.gif';
 const String kDecorationModel2 =
     'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752817217/model8_scxru2.gif';
-const String kAssetDecorationModel1 = 'assets/images/model11.gif';
+const String kAssetDecorationModel1 = 'assets/images/model12.gif';
 const String kAssetDecorationModel2 = 'assets/images/model8.gif';
+const String kAssetWave = 'assets/images/wave.json';
 
 const double kExperienceButtonWidth = 300;
 const double kExperienceButtonHeight = 230;
@@ -63,24 +68,24 @@ const String kEventsJoVideo =
 const List<String> kEventsJoScreenshots = [
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813821/home_lqinke.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813819/details_q0egyi.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813812/rating_vobhmb.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813812/rating_vobhmb.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813804/details2_uq1luj.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813804/search_azd7qh.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813778/checkout_xwnbvl.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813716/create3_cilk8w.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813778/checkout_xwnbvl.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813716/create3_cilk8w.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813713/create_e4tkmz.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813707/book_a8ruct.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813700/accountowner_chipz3.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813686/about_pkln07.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813682/accountuser_n32zrz.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813645/privacy_ry1au0.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813700/accountowner_chipz3.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813686/about_pkln07.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813682/accountuser_n32zrz.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813645/privacy_ry1au0.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813641/ownervenues_jkun6z.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813637/password_rjcn5r.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813637/password_rjcn5r.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813724/admin_loyvdr.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813733/admin7_m4rdsr.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813720/admin3_m7ytu3.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813720/admin3_m7ytu3.png',
   'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813708/admin9_xsqccb.png',
-  'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813699/admin4_kspgg5.png',
+  // 'https://res.cloudinary.com/ddixv6xdj/image/upload/v1752813699/admin4_kspgg5.png',
 ];
 const List<ProjectSegment> kEventsJoSegments = [
   ProjectSegment(

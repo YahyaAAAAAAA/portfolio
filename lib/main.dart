@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:portfolio_3/pages/home_page.dart';
 import 'package:portfolio_3/utils/theme/app_theme.dart';
+import 'package:portfolio_3/utils/theme/theme_notifier.dart';
 
 void main() {
   //Widgetsbinding to be initialized before running app
@@ -27,12 +28,17 @@ class App extends StatelessWidget {
     //remove splash screen
     FlutterNativeSplash.remove();
 
-    return MaterialApp(
-      title: 'Yahya Amarneh',
-      themeMode: ThemeMode.light,
-      debugShowCheckedModeBanner: false,
-      theme: getAppTheme(),
-      home: const HomePage(),
+    return ValueListenableBuilder<int>(
+      valueListenable: ThemeNotifier.themeNotifier,
+      builder: (context, themeIndex, child) {
+        return MaterialApp(
+          title: 'Yahya Amarneh',
+          debugShowCheckedModeBanner: false,
+          theme: getAppTheme(themeIndex),
+          themeAnimationCurve: Curves.easeInOut,
+          home: const HomePage(),
+        );
+      },
     );
   }
 }

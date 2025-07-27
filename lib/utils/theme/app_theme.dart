@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/global_colors.dart';
 
-ThemeData getAppTheme() {
+ThemeData getAppTheme(int themeIndex) {
+  final colors = GColors.getColors(themeIndex);
+
   return ThemeData(
     fontFamily: kFontFamily,
-    scaffoldBackgroundColor: GColors.black,
-    primaryColor: GColors.darkPurple,
-    cardColor: GColors.darkPurple,
-    canvasColor: GColors.purple,
-    splashColor: GColors.persianIndigo,
-    disabledColor: GColors.lightGrey,
-    iconTheme: IconThemeData(color: GColors.white, size: kIconSizeMedium),
+    scaffoldBackgroundColor: colors.background,
+    // primaryColor: colors.primary,
+    cardColor: colors.card,
+    canvasColor: colors.canvas,
+    splashColor: colors.splash,
+    disabledColor: colors.disabled,
+    iconTheme: IconThemeData(color: colors.onSurface, size: kIconSizeMedium),
     appBarTheme: AppBarTheme(
-      iconTheme: IconThemeData(color: GColors.white, size: kIconSizeMedium),
-      backgroundColor: GColors.darkPurple,
+      iconTheme: IconThemeData(color: colors.onSurface, size: kIconSizeMedium),
+      backgroundColor: colors.card,
     ),
-    dividerColor: GColors.indigo,
+
+    dividerColor: colors.divider,
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        backgroundColor: GColors.indigo,
+        backgroundColor: colors.divider,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kOuterBorderRadius),
         ),
@@ -27,7 +30,7 @@ ThemeData getAppTheme() {
     ),
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(
-        backgroundColor: GColors.indigo,
+        backgroundColor: colors.divider,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kOuterBorderRadius),
         ),
@@ -36,7 +39,7 @@ ThemeData getAppTheme() {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         side: BorderSide.none,
-        iconColor: GColors.white,
+        iconColor: colors.onSurface,
         padding: const EdgeInsets.all(kPanelPaddingSmall),
         minimumSize: const Size(30, 30),
         fixedSize: const Size(30, 30),
@@ -46,14 +49,25 @@ ThemeData getAppTheme() {
       ),
     ),
     dialogTheme: DialogTheme(
-      backgroundColor: GColors.darkPurple,
+      backgroundColor: colors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(kOuterBorderRadius),
       ),
     ),
+    switchTheme: SwitchThemeData(
+      trackColor: WidgetStateProperty.all(colors.canvas.withValues(alpha: 0)),
+      trackOutlineWidth: const WidgetStatePropertyAll(1),
+      trackOutlineColor: WidgetStatePropertyAll(
+        colors.divider.withValues(alpha: 0),
+      ),
+      thumbColor: WidgetStateProperty.all(colors.card),
+      thumbIcon: const WidgetStatePropertyAll(Icon(Icons.square_rounded)),
+      padding: const EdgeInsets.all(0),
+      splashRadius: 0,
+    ),
     colorScheme: ColorScheme.fromSeed(
-      seedColor: GColors.darkPurple,
-      onSurface: GColors.white,
+      seedColor: colors.card,
+      onSurface: colors.onSurface,
     ),
   );
 }

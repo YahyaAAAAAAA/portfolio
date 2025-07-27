@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:lottie/lottie.dart';
 import 'package:portfolio_3/utils/constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
@@ -70,29 +71,31 @@ class _AboutPanelState extends State<AboutPanel> with TickerProviderStateMixin {
               duration: const Duration(milliseconds: k500mill),
               child: Align(
                 alignment: Alignment.center,
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    context.theme.cardColor.withValues(alpha: 0.5),
-                    BlendMode.hue,
-                  ),
-                  child: Gif(
-                    controller: _gifController,
-                    image: const AssetImage(kAssetDecorationModel1),
-                    placeholder:
-                        (context) => SizedBox(
-                          width: 250,
-                          height: 250,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: context.theme.canvasColor,
+                child: Gif(
+                  controller: _gifController,
+                  image: const AssetImage(kAssetDecorationModel1),
+                  placeholder:
+                      (context) => SizedBox(
+                        width: 250,
+                        height: 250,
+                        child: Center(
+                          child: ColorFiltered(
+                            colorFilter: ColorFilter.mode(
+                              context.theme.splashColor,
+                              BlendMode.srcATop,
+                            ),
+                            child: Lottie.asset(
+                              kAssetWave,
+                              width: 60,
+                              height: 60,
                             ),
                           ),
                         ),
-                    autostart: Autostart.loop,
-                    fps: 60,
-                    width: 250,
-                    height: 250,
-                  ),
+                      ),
+                  autostart: Autostart.loop,
+                  fps: 60,
+                  width: 250,
+                  height: 250,
                 ),
               ),
             ),
@@ -137,28 +140,30 @@ class _AboutPanelState extends State<AboutPanel> with TickerProviderStateMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        context.theme.cardColor.withValues(alpha: 0.5),
-                        BlendMode.hue,
-                      ),
-                      child: Gif(
-                        placeholder:
-                            (context) => SizedBox(
-                              width: 150,
-                              height: 150,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: context.theme.canvasColor,
+                    Gif(
+                      placeholder:
+                          (context) => SizedBox(
+                            width: 150,
+                            height: 150,
+                            child: Center(
+                              child: ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                  context.theme.splashColor,
+                                  BlendMode.srcATop,
+                                ),
+                                child: Lottie.asset(
+                                  kAssetWave,
+                                  width: 60,
+                                  height: 60,
                                 ),
                               ),
                             ),
-                        image: const AssetImage(kAssetDecorationModel2),
-                        autostart: Autostart.loop,
-                        fps: 60,
-                        width: 150,
-                        height: 150,
-                      ),
+                          ),
+                      image: const AssetImage(kAssetDecorationModel2),
+                      autostart: Autostart.loop,
+                      fps: 60,
+                      width: 150,
+                      height: 150,
                     ),
                     const SizedBox(
                       width: 200,

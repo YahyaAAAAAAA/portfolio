@@ -53,7 +53,11 @@ class RippleButton extends StatelessWidget {
             rippleRadius: rippleRadius ?? 1.2,
             child:
                 centerChild == true
-                    ? Center(child: child ?? const SizedBox.shrink())
+                    ? ClipRRect(
+                      borderRadius: BorderRadius.circular(kOuterBorderRadius),
+
+                      child: Center(child: child ?? const SizedBox.shrink()),
+                    )
                     : child ?? const SizedBox.shrink(),
           ),
         ),
