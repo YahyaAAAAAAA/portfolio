@@ -25624,7 +25624,7 @@ _.z=k
 _.Q=l
 _.as=m},
 azL(a){var s=null
-return new A.a9A(a,new A.mn("About",!0,!1,455,1/0,B.dt,B.dW,s,s,s,s,B.ai,s),new A.mn("Home",!0,!0,s,1/0,B.hE,B.rI,s,s,s,s,B.ai,s),new A.mn("Projects",!0,!1,1/0,255,B.dt,B.dW,s,s,s,s,B.a_,s),new A.mn("Project Display",!0,!1,1/0,255,B.dt,B.dW,s,s,s,s,B.a_,B.k_),new A.mn("Experience",!0,!1,1/0,255,B.dt,B.dW,s,s,s,s,B.a_,B.jZ))},
+return new A.a9A(a,new A.mn("About",!0,!1,455,1/0,B.dt,B.dW,s,s,s,s,B.ai,s),new A.mn("Home",!0,!0,s,1/0,B.hE,B.rI,s,s,s,s,B.ai,s),new A.mn("Projects",!0,!1,1/0,255,B.dt,B.dW,s,s,s,s,B.a_,s),new A.mn("Project Display",!1,!1,1/0,255,B.dt,B.dW,s,s,s,s,B.a_,B.k_),new A.mn("Experience",!0,!1,1/0,255,B.dt,B.dW,s,s,s,s,B.a_,B.jZ))},
 a9A:function a9A(a,b,c,d,e,f){var _=this
 _.a=a
 _.b=b
