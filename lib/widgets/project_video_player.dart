@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:portfolio_3/utils/constants.dart';
+import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:video_player/video_player.dart';
 
 class ProjectVideoPlayerDialog extends StatefulWidget {
@@ -19,7 +21,7 @@ class _ProjectVideoPlayerDialogState extends State<ProjectVideoPlayerDialog> {
     super.initState();
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
       ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        //ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
         _controller.play();
       });
@@ -42,7 +44,15 @@ class _ProjectVideoPlayerDialogState extends State<ProjectVideoPlayerDialog> {
                   aspectRatio: _controller.value.aspectRatio,
                   child: VideoPlayer(_controller),
                 )
-                : const Center(child: CircularProgressIndicator()),
+                : Center(
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      context.theme.splashColor,
+                      BlendMode.srcATop,
+                    ),
+                    child: Lottie.asset(kAssetWave, width: 60, height: 60),
+                  ),
+                ),
       ),
     );
   }

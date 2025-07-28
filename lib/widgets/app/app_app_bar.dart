@@ -8,12 +8,12 @@ import 'package:portfolio_3/utils/env_constants.dart';
 import 'package:portfolio_3/utils/extensions/context_extensions.dart';
 import 'package:portfolio_3/utils/extensions/int_extensions.dart';
 import 'package:portfolio_3/widgets/app/app_divider.dart';
+import 'package:portfolio_3/widgets/app/app_image.dart';
 import 'package:portfolio_3/widgets/app/app_text.dart';
 import 'package:portfolio_3/widgets/mobile_navbar_button.dart';
 import 'package:portfolio_3/widgets/ripple_button.dart';
 import 'package:portfolio_3/widgets/theme_switcher.dart';
 import 'package:portfolio_3/widgets/wrappers/noise_wrapper.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -27,6 +27,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.panelsEnabled,
     required this.onPanelToggle,
   });
+
+  bool isSmallScreen(BuildContext context) => context.width() <= 410;
+
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
@@ -78,7 +81,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     )
                     : null,
-            actionsPadding: const EdgeInsets.only(right: 20),
+            actionsPadding: const EdgeInsets.only(right: 20, left: 20),
             actions: [
               const ThemeSwitcher(),
               const SizedBox(width: 10),
@@ -203,16 +206,17 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                   );
                 },
-                width: 120,
+                width: isSmallScreen(context) ? 30 : 120,
                 height: 30,
                 centerChild: true,
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   spacing: 5,
                   children: [
-                    Icon(Icons.mail_rounded, size: kIconSizeSmall),
-                    LabelSmallText('Contact Me'),
+                    const Icon(Icons.mail_rounded, size: kIconSizeSmall),
+                    if (!isSmallScreen(context))
+                      const LabelSmallText('Contact Me'),
                   ],
                 ),
               ),
@@ -224,6 +228,8 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void showResumeDialog(BuildContext context) {
+    final TransformationController transformationController =
+        TransformationController();
     showDialog(
       context: context,
       builder:
@@ -232,15 +238,46 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: NoiseWrapper(
               child: AlertDialog(
                 title: const H3('Resume'),
-                content: ClipRRect(
-                  borderRadius: BorderRadius.circular(kOuterBorderRadius),
-                  child: SizedBox(
-                    height: context.height(),
-                    width: 500,
-                    child: SfPdfViewer.network(kResumeInApp),
+                content: SizedBox(
+                  height: context.height(),
+                  width: context.width() / 2,
+                  child: GestureDetector(
+                    onDoubleTap: () {
+                      //zoom on double tap
+                      if (transformationController.value.getMaxScaleOnAxis() >
+                          1) {
+                        transformationController.value = Matrix4.identity();
+                      } else {
+                        transformationController
+                            .value = Matrix4.diagonal3Values(1.5, 1.5, 1);
+                      }
+                    },
+                    child: InteractiveViewer(
+                      scaleEnabled: false,
+                      transformationController: transformationController,
+                      child: const SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            AppImage(
+                              imageUrl: kResumePage1,
+                              borderRadius: kOuterBorderRadius,
+                            ),
+                            AppDivider(thickness: 1),
+                            AppImage(
+                              imageUrl: kResumePage2,
+                              borderRadius: kOuterBorderRadius,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 actions: [
+                  TextButton(
+                    onPressed: () => launchUrl(Uri.parse(kResumeInWeb)),
+                    child: const LabelSmallText('Open in web'),
+                  ),
                   TextButton(
                     onPressed: () => context.pop(),
                     child: const LabelSmallText('Close'),

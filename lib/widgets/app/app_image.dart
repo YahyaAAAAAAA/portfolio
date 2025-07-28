@@ -11,6 +11,7 @@ class AppImage extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit? fit;
+  final double? borderRadius;
 
   const AppImage({
     super.key,
@@ -19,6 +20,7 @@ class AppImage extends StatelessWidget {
     this.width,
     this.height,
     this.fit,
+    this.borderRadius,
   }) : imageHash = null;
 
   const AppImage.hash({
@@ -28,30 +30,34 @@ class AppImage extends StatelessWidget {
     this.width,
     this.height,
     this.fit,
+    this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      placeholder:
-          (context, url) => Center(
-            child:
-                imageHash == null
-                    ? ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        context.theme.splashColor,
-                        BlendMode.srcATop,
-                      ),
-                      child: Lottie.asset(kAssetWave, width: 60, height: 60),
-                    )
-                    : Center(child: BlurHash(hash: imageHash!)),
-          ),
-      errorWidget:
-          (context, url, error) => const Center(child: Icon(Icons.error)),
-      width: width,
-      height: height,
-      fit: fit,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius ?? 0),
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        placeholder:
+            (context, url) => Center(
+              child:
+                  imageHash == null
+                      ? ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          context.theme.splashColor,
+                          BlendMode.srcATop,
+                        ),
+                        child: Lottie.asset(kAssetWave, width: 60, height: 60),
+                      )
+                      : Center(child: BlurHash(hash: imageHash!)),
+            ),
+        errorWidget:
+            (context, url, error) => const Center(child: Icon(Icons.error)),
+        width: width,
+        height: height,
+        fit: fit,
+      ),
     );
   }
 }

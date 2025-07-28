@@ -155,7 +155,6 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                 ? const SizedBox.shrink()
                 : CarouselSlider(
                   options: CarouselOptions(
-                    height: context.height() * 0.5,
                     viewportFraction: 0.3,
                     autoPlay: true,
                     autoPlayInterval: const Duration(seconds: 3),
@@ -168,7 +167,9 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                   items: List<Widget>.generate(
                     widget.project.screenshots?.length ?? 0,
                     (index) => Padding(
-                      padding: const EdgeInsets.all(kPanelPaddingSmall),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: kPanelPaddingSmall,
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(kOuterBorderRadius),
                         child: MouseRegion(
@@ -189,6 +190,7 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                               child: AppImage(
                                 imageUrl: widget.project.screenshots![index],
                                 fit: BoxFit.cover,
+                                // width: 1000,
                               ),
                             ),
                           ),
@@ -217,17 +219,13 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
     );
   }
 
-  void goLeft(int currentIndex, List<String> screenshots) {
-    setState(() => currentIndex = (currentIndex - 1) % screenshots.length);
-  }
-
-  void goRight(int currentIndex, List<String> screenshots) {
-    setState(() => currentIndex = (currentIndex + 1) % screenshots.length);
-  }
-
   void openImagesFullscreen(int initialIndex) {
     int currentIndex = initialIndex;
     final screenshots = widget.project.screenshots!;
+    //track InteractiveViewer transformation
+    final TransformationController transformationController =
+        TransformationController();
+
     context.dialog(
       barrierDismissible: true,
       pageBuilder:
@@ -237,7 +235,6 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: AlertDialog(
                   backgroundColor: Colors.transparent,
-
                   //close button
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,8 +254,18 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                   content: Padding(
                     padding: const EdgeInsets.all(kPanelPaddingMedium),
                     child: InteractiveViewer(
+                      transformationController: transformationController,
                       child: GestureDetector(
                         onHorizontalDragEnd: (details) {
+                          //check if the image is zoomed in
+                          final double currentScale =
+                              transformationController.value
+                                  .getMaxScaleOnAxis();
+
+                          if (currentScale > 1.01) {
+                            return;
+                          }
+
                           const double minSwipeVelocity = 300.0;
                           if (details.velocity.pixelsPerSecond.dx.abs() <
                               minSwipeVelocity) {
@@ -270,17 +277,23 @@ class _ProjectDisplayPanelState extends State<ProjectDisplayPanel> {
                                   currentIndex =
                                       (currentIndex - 1) % screenshots.length,
                             );
+                            // Reset zoom when changing image
+                            transformationController.value = Matrix4.identity();
                           } else {
                             setState(
                               () =>
                                   currentIndex =
                                       (currentIndex + 1) % screenshots.length,
                             );
+
+                            //reset zoom when changing image
+                            transformationController.value = Matrix4.identity();
                           }
                         },
                         child: AppImage(
                           imageUrl: screenshots[currentIndex],
-                          fit: BoxFit.contain,
+                          // fit: BoxFit.contain,
+                          width: context.width(),
                         ),
                       ),
                     ),

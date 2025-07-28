@@ -6,6 +6,7 @@ import 'package:portfolio_3/utils/theme/app_theme.dart';
 import 'package:portfolio_3/utils/theme/theme_notifier.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   //Widgetsbinding to be initialized before running app
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 

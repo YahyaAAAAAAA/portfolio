@@ -322,6 +322,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         },
                         onPressed: () {
                           if (mounted) {
+                            if (!panelsManager.panel3.enabled) {
+                              setState(
+                                () => panelsManager.togglePanel(context, 3),
+                              );
+                            }
                             setState(() => projectIndex = index);
                           }
                         },
