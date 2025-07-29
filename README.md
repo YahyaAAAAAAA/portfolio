@@ -77,7 +77,7 @@
 
 ###
 
-<p align="left">• Done.</p>
+<p align="left">• Done</p>
 
 ###
 
